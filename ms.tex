@@ -15,19 +15,27 @@
 
 \begin{document}
 
-\title{Will it blend: Is the Milky Way bar causing chaotic fanning of the Ophiuchus stream?}
-\author{Adrian M. Price-Whelan\altaffilmark{\colum,\adrn}, +others}
+\title{}
+\author{Adrian M. Price-Whelan\altaffilmark{\colum,\adrn},
+            Branimir Sesar\altaffilmark{\mpia},
+            Sarah Pearson\altaffilmark{\colum},
+            Kathryn V. Johnston\altaffilmark{\colum},
+            Hans-Walter Rix\altaffilmark{\mpia},
+}
 
 % Affiliations
 \newcommand{\colum}{1}
 \newcommand{\adrn}{2}
+\newcommand{\mpia}{3}
 
 \altaffiltext{\colum}{Department of Astronomy,
                       Columbia University,
                       550 W 120th St.,
                       New York, NY 10027, USA}
 \altaffiltext{\adrn}{To whom correspondence should be addressed: adrn@astro.columbia.edu}
-
+\altaffiltext{\mpia}{Max-Planck-Institut f\"ur Astronomie,
+                     K\"onigstuhl 17, D-69117 Heidelberg, Germany}
+                     
 \begin{abstract}
 
 % Context
@@ -52,35 +60,27 @@ The existence of or lack of stream fans may provide an interesting constraint on
 
 \section{Introduction}\label{sec:introduction}
 
-* Observational work on the stream (Bernard, Sesar)
+The Ophiuchus stream \citep{bernard14, sesar15a} is a recently discovered stellar tidal stream that sits above the Galactic bulge at a Galactocentric radius and height $(R,z) \approx (1, 4.3)~{\rm kpc}$. All observational evidence suggests that the stream is a totally disrupted globular cluster: The stream stars have (1) a small positional dispersion orthogonal to the extended direction of the stream ($\approx$10 pc); (2) a small velocity dispersion $\approx$0.4 ${\rm km}~{\rm s}^{-1}$; (3) an old stellar population ($\approx$12 Gyr) estimated from isochrone fitting; and (4) no detectable over-density along the stream that could be  the progenitor system \citep[][hereafter S15a]{sesar15a}. 
 
-(a short projected length of $\approx$XX deg)
+The deprojected length of the visible part of the stream ($\approx$1.5 kpc) is short for the age of its stellar population. S15a fit an orbit to the kinematics of the stream stars in a static, axisymmetric model for the gravitational field of the inner Galaxy and ran N-body simulations of globular clusters on this orbit. S15a find that---on this orbit---the observed portion of the stream must have been formed in the last $\lesssim$400 Myr for the stream to remain as short as it is observed. This dynamical age is at odds with the old stellar population. More recently, a significant observational effort has followed-up nearly all BHB star candidates within XX deg of the stream to obtain radial velocities to identify more stream members \citep{sesar15b}. The stream has a very distinct and large line-of-sight velocity ($\approx$290 ${\rm km}~{\rm s}^{-1}$) and is therefore easily detected above the background halo population. Of the XX stars followed up, six have velocities significantly discrepant with the halo population. Of these six stars, two lie within the previously detected extent of the stream and have velocities consistent with the previously identified stream members. The remaining four stars lie close to an extrapolation of the stream, have velocities much larger than halo stars in this region ($v_{\rm los}>230 {\rm km}~{\rm s}^{-1}$), but have a velocity dispersion $\approx$75 times the measured internal velocity dispersion of the stream stars and positional spread much larger than the orthogonal positional dispersion of the main part of the stream. These low-density, high-dispersion features were not modeled in S15a and N-body simulations on the orbit fit from the previous work do not naturally reproduce these features.
 
-The stream is $\approx$XX kpc from the Sun at a Galactocentric radius and height $(R,z) \approx (XX, YY)~{\rm kpc}$.
+It is not surprising that the orbit fit in the static, axisymmetric potential model used in S15a leads to a dynamical puzzle and failed to predict the new features: it is now well-known that the Galactic bulge contains a triaxial, bar-like structure several kpc in size \citep[e.g.,][]{blitzXX, wegg13, MANY}. Given the proximity of the stream to the center of the Galaxy, the time-dependent, triaxial potential of the Galactic bar must be taken into account when modeling the orbit of the progenitor system. The presence of a bar-like perturbation to the potential will change the possible orbit of the stream progenitor and will drastically change the resonance structure of orbits in the inner galaxy \citep{athanassoula, MANY}. The bar may also induce a significant number of chaotic orbits in this region.
 
-much larger than the measured $\lesssim 1~{\rm km}~{\rm s}^{-1}$ dispersion of the 
+[Review of chaos / fanning stuff]
 
-* Summarize chaos work
-
-* Why is Ophiuchus interesting?
-
-- Shortness of the stream
-
-- Possible fanned debris
-
-- Discrepancy between dynamical / stellar population age of the stream
-
-The Ophiuchus stream is located in a unique position relative to other known stellar tidal streams: Many streams have been found in the halo of the Milky Way at Galactocentric distances of XX--YY kpc. For this stream, it is therefore expected that the baryonic components of the Milky Way---the combination of the bulge, disk, and Galactic bar---should dominate the kinematic history of the progenitor system. Unfortunately, the density distribution or gravitational potential of the inner Galaxy is not well known.
-
-Recent modeling fit for the orbit, found discrepancy between dynamical age and age of stellar populations \citep{sesar15}, however they assume an axisymmetric disk plus spherical bulge and halo. If the Galactic bar contributes significantly to the density distribution of the inner Galaxy, the orbit of the cluster could be entirely different.
+In this work, we study whether stream-fanning---chaotic or simply from density evolution in a triaxial, time-dependent potential---can explain the observed properties of the Ophiuchus stream. In Section~\ref{sec:method} we describe the methods used in this work: in Section~\ref{sec:potential} we describe the models we use for the gravitational potential of the Galaxy, in Section~\ref{sec:mocks} we explain the simple method we use to generate mock streams, and in Section~\ref{sec:chaos-indicator} we briefly describe the methods we use for detecting and characterizing chaotic orbits. In Section~\ref{sec:results1} we discuss the differences in the orbit structure between a static, axisymmetric potential model and a model with a time-dependent bar potential, and in Section~\ref{sec:results2} we use mock streams to argue that [chaotic stream-fanning is a plausible explanation for the observational peculiarities of the Ophiuchus stream.] We conclude in Section~\ref{sec:conclusions}.
 
 \section{Methods}\label{sec:method}
 
-Our goal is to assess whether the Galactic bar can produce significant numbers of chaotic orbits in the inner Galaxy and see if the Ophiuchus stream could plausibly be on a strongly chaotic orbit. If chaos is important for this stream, we would then like to show that chaotic stream-fanning can reproduce the observed morphology and velocity signatures of ... In this section, we describe the methods we will use to detect and quantify the strength of chaos for orbits and then explain the method we will use to generate mock tidal streams.
+Our goal is to (1) assess whether the Galactic bar can produce significant numbers of chaotic orbits in the inner Galaxy and (2) see if the Ophiuchus stream could plausibly be on a strongly chaotic orbit. In this section, we describe the potential model we use for the galaxy and describe the methods we use to detect and quantify the strength of chaos for orbits. 
 
-\subsection{Potential model}\label{sec:potential}
+\subsection{Potential models}\label{sec:potential}
 
-We use ...
+To integrate orbits and to compute chaos indicators we must choose a gravitational potential that represents the potential of the Milky Way. [...]
+
+We use a four-component, analytic model for the potential consisting of a spherical Navarro-Frenk-White halo \citep{nfw96}, a Miyamoto-Nagai disk \citep{miyamoto75}, a Hernquist spheroid \citep{hernquist90}, and 
+a basis function expansion representation of the Galactic bar used in \citep{wang12}. 
+
 [Bulge from Portail et a. (2015), bar from Wegg and Gerhard (2015)?]
 
 Though these density distributions are analytic and relatively simple, the potential and accelerations must be computed numerically. Rather than solve Poisson's equation at every evaluation of the potential or forces, we instead use the Self-Consistent Field (SCF) method \citep{hernquist92} to expand the density and potential on a series of orthogonal potential-density pairs. This method has been previously used to represent the potential from the Galactic bar \citep{zhao96, wangzhao12}. The advantage to this method is that the expansion coefficients (expensive integrals) only need to be computed once.
@@ -88,9 +88,11 @@ Though these density distributions are analytic and relatively simple, the poten
 We follow the formalism introduced in \cite{hernquist92} and used in \cite{lowing11}: 
 
 
-\subsection{Mock streams}\label{sec:mocks}
+\subsection{Generating mock streams}\label{sec:mocks}
 
 by releasing ensembles of test particles when the progenitor orbit crosses pericenter.
+
+\subsection{Detecting and characterizing chaos with orbital frequency diffusion}\label{sec:chaos-indicator}
 
 \section{Results}
 
