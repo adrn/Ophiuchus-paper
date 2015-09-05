@@ -5,13 +5,14 @@
 \usepackage{amssymb,amsmath,amsbsy}
 \usepackage{booktabs}
 \usepackage[caption=false]{subfig}
+\usepackage{multirow}
 
 % commands
 \newcommand{\given}{\,|\,}
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\transpose}[1]{{#1}^{\mathsf{T}}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
-\newcommand{\msun}{\mathrm{M}_\odot}
+\newcommand{\msun}{\ensuremath{\mathrm{M}_\odot}}
 
 \newcommand{\project}[1]{\textsl{#1}}
 
@@ -69,7 +70,7 @@ The Ophiuchus stream \citep{bernard14, sesar15a} is a recently discovered stella
 
 The deprojected length of the visible part of the stream ($\approx$1.5 kpc) is short for the age of its stellar population. S15a fit an orbit to the kinematics of the stream stars in a static, axisymmetric model for the gravitational field of the inner Galaxy and ran N-body simulations of globular clusters on this orbit. S15a find that---on this orbit---the observed portion of the stream must have been formed in the last $\lesssim$400 Myr for the stream to remain as short as it is observed. This dynamical age is at odds with the old stellar population. More recently, a significant observational effort has followed-up nearly all BHB star candidates within XX deg of the stream to obtain radial velocities to identify more stream members \citep{sesar15b}. The stream has a very distinct and large line-of-sight velocity ($\approx$290 ${\rm km}~{\rm s}^{-1}$) and is therefore easily detected above the background halo population. Of the XX stars followed up, six have velocities significantly discrepant with the halo population. Of these six stars, two lie within the previously detected extent of the stream and have velocities consistent with the previously identified stream members. The remaining four stars lie close to an extrapolation of the stream, have velocities much larger than halo stars in this region ($v_{\rm los}>230~{\rm km}~{\rm s}^{-1}$), but have a velocity dispersion $\approx$75 times the measured internal velocity dispersion of the stream stars and positional spread much larger than the orthogonal positional dispersion of the main part of the stream. These low-density, high-dispersion features were not modeled in S15a and N-body simulations on the orbit fit from the previous work do not  reproduce these features.
 
-It is not surprising that the orbit fit in the static, axisymmetric potential model used in S15a leads to a dynamical puzzle and failed to predict the new features: it is now well-known that the Galactic bulge contains a triaxial, bar-like structure several kpc in size \citep[e.g.,][]{blitzXX, wegg13, MANY}. Given the proximity of the stream to the center of the Galaxy, the time-dependent, triaxial potential of the Galactic bar must be taken into account when modeling the orbit of the progenitor system. The presence of a bar-like perturbation to the potential will change the possible orbit of the stream progenitor and will drastically change the resonance structure of orbits in the inner galaxy \citep{athanassoula, MANY}, potentially introducing a significant number of chaotic orbits in this region.
+It is not surprising that the orbit fit in the static, axisymmetric potential model used in S15a leads to a dynamical puzzle and failed to predict the new features: it is now well-known that the Galactic bulge contains a triaxial, bar-like structure several kpc in size \citep[e.g.,][]{blitzXX, wegg13, MANY}. Given the proximity of the stream to the center of the Galaxy, the time-dependent, triaxial potential of the Galactic bar must be taken into account when modeling the orbit of the progenitor system. The presence of a bar-like perturbation to the potential will change the possible orbit of the stream progenitor and will drastically change the resonance structure of orbits in the inner galaxy \citep{athanassoula, portail15b MANY}, potentially introducing a significant number of chaotic orbits in this region \citep{weinberg15}.
 
 Recent work has shown that chaos can dramatically alter the density evolution of tidal streams. Along certain chaotic orbits, the stream stars will spread much faster in 3D position than from ordinary phase-mixing and, depending on the orbital phase at which the stream is observed, may develop large, low-density blobs of stars at the ends of a stream \citep{apw15-chaos}. [...]
 
@@ -81,35 +82,36 @@ Our goal is to (1) assess whether the Galactic bar can produce significant numbe
 
 \subsection{Potential models}\label{sec:potential}
 
-To integrate orbits and to compute chaos indicators we must choose a gravitational potential model to represent the potential of the Milky Way. The key feature of the potential that we would like to capture is the time-dependence and triaxiality of the Galactic bar. We construct two parametrized potential models: one with a triaxial, time-dependent bar and one with a purely spherical bulge, both added to simple models for the disk and halo of the Milky Way. Recent work has mapped the 3D density distribution of the region around the bulge using number counts of red clump stars and have measured the bar angle and axis ratios of the bar structure \citep{wegg13}. The authors do not fit an analytic density model to the data and do not provide enough information about the density field to reconstruct the full-space stellar density distribution of the bulge. Further, this is not a dynamical model for the bar and therefore may not account for all of the mass but rather provides information about the number density of stars in the Galactic bar. \cite{portail15}
+To integrate orbits and to compute chaos indicators we must choose a gravitational potential model to represent the potential of the Milky Way. The key feature of the potential that we would like to capture is the time-dependence and triaxiality of the Galactic bar. We construct two parametrized potential models: one with a triaxial, time-dependent (rotating) bulge component and one with a purely spherical bulge, both added to simple models for the disk and halo of the Milky Way. These potentials are meant to be representative rather than definitive models as the global potential is not known.
 
-We instead use an earlier model that uses a basis function expansion (BFE) to represent the potential and density of the bar \citep[][hereafter W12]{wang12}. The authors provide a table of expansion coefficients for a low-order expansion of the triaxial bar density used in \citet{dwek95}. The BFE formalism used in W12 neglects the sine expansion terms because of the symmetries of the triaxial density; the coefficients presented in W12 are for just the cosine terms (the $A_{lm}$ in \citet{hernquist92} or the $S_{nlm}$ in \citet{lowing11}). We have implemented the BFE computation of the potential, density, and gradient of the potential in C and Python and the code is publicly available on \project{GitHub}.\footnote{\url{https://github.com/adrn/biff}} The BFE representation effectively fixes the axis ratios of the bar (the exponential scale lengths along the three axes of the bar were adopted from \cite{dwek95} when the expansion coefficients were calculated in W12), but the mass of the bar, pattern speed, and angle with respect to the Galactic $x$ axis are free parameters. 
+In both models, we use a spherical Navarro-Frenk-White potential to represent the dark matter \citep{nfw96}, a Miyamoto-Nagai potential for the disk \citep{miyamoto75}, and a Hernquist spheroid for the central spherical component of the bulge \citep{hernquist90}. Model A consists of just these three components and the total potential is therefore static and axisymmetric. Model B includes a component to represent the Galactic bar. For the bar component, we use a basis function expansion (BFE) of the potential and density of the bar with expansion coefficients derived for a triaxial, exponential bar density \citep[][hereafter W12]{wang12}. We use the pre-computed expansion coefficients used in W12, which were computed from a low-order expansion of the triaxial bar density used in \citet{dwek95}.\footnote{The coefficients presented in W12 are for just the cosine terms (the $A_{lm}$ in \citet{hernquist92} or the $S_{nlm}$ in \citet{lowing11}) because all sine terms have zero coefficients for a triaxial density function.} We have implemented the BFE computation of the potential, density, and gradient of the potential in C and Python and the code is publicly available on \project{GitHub}.\footnote{\url{https://github.com/adrn/biff}} 
 
-In both models, we use a spherical Navarro-Frenk-White potential for the halo \citep{nfw96}, a Miyamoto-Nagai potential for the disk \citep{miyamoto75}, and a Hernquist spheroid for the central spherical component of the bulge \citep{hernquist90}. Model A consists of just these three components and the total potential is therefore static and axisymmetric. Models B and C include the BFE bar potential described above: Model B contains a light bar and Model C contains a heavy bar. Except for the pattern speed and bar angle (which are varied), the parameter values for all potential models are given in Table~\ref{tbl:potential-params}. In all cases, the parameter values were chosen to qualitatively match the rotation curve of \citet{bovy12}
+The BFE representation fixes the axis ratios of the bar---that is, the the exponential scale lengths along the three axes of the bar were adopted from \cite{dwek95} when the expansion coefficients were calculated in W12)---and the pattern speed and angle with respect to the Galactic $x$ axis are left as free parameters; all other potential parameter values are given in Table~\ref{tbl:potential-params}. In both Model A and Model B, the mass of the halo is fixed and the mass of the disk, spheroid, and bar are varied in order to qualitatively reproduce the flatness and amplitude of the circular velocity of the Milky Way \citep{bovy12}. Figure~\ref{fig:circ-vel} shows the circular velocity curves and decompositions for each component for models A and B. Figure~\ref{fig:density} shows isodensity contours of the face-on (left) and edge-on (right) surface density for the two potential models \citep[compare to, e.g., Figure 3 in][]{portail15}. 
 
 \begin{table*}[ht]
 \begin{center}
-	\begin{tabular}{ c  c | c  c}
+	\begin{tabular}{ c | c | c | c}
 	         \toprule
-	         \multicolumn{2}{c|}{\bf Model A} & \multicolumn{2}{c}{\bf Model B} \\
-	         Parameter & Value & Parameter & Value \\\toprule
-		{\it Disk} &  &  & \\
-		a & b & c & d\\
-		a & b & c & d\\\midrule
-		a & b & c & d\\
+	         Component & Parameter & {\bf Model A} & {\bf Model B}\\\toprule
+		Disk & $M_{\rm disk}$ &  & \\
+		& $a$ &  & \\
+		& $b$ &  &  \\\midrule
+	         Halo & $v_h$ &  & \\
+		& $r_s$ &  & \\\midrule
+		Spheroid & $M_{\rm sph}$ &  & \\
+		& $c$ &  & \\\midrule
+		Bar & $M_{\rm bar}$ & -- & $1.8 \times 10^{10}~\msun$ \\
 		\bottomrule
 		\end{tabular}
-	\caption{ \label{tbl:potential}}
+	\caption{The disk potential scale lengths ($a$, $b$) were adopted following \citep{bovy15-galpy} to match the exponential scale length of the disk \citep{bovyrix13} and local dark-matter density \citep[e.g.,][]{bovytremaine12}. The halo, NFWpotential is parametrized as $\Phi(r) = -v_h^2\,\frac{\ln{(1 + r/r_s)}}{r/r_s}$. The bar mass for Model B is taken from recent 3D density modeling of red clump stars in the Galactic bulge \citep{portail15}. \label{tbl:potential}}
 \end{center}
 \end{table*}
-
 
 \subsection{Detecting and characterizing chaos with orbital frequency diffusion}\label{sec:chaos-indicator}
 
 \subsection{Generating mock streams}\label{sec:mocks}
 
 by releasing ensembles of test particles when the progenitor orbit crosses pericenter.
-
 
 \section{Results}
 
@@ -119,9 +121,12 @@ by releasing ensembles of test particles when the progenitor orbit crosses peric
 
 \section{Conclusions}\label{sec:conclusions}
 
+% Recent work has mapped the 3D density distribution of the region around the bulge using number counts of red clump stars and have measured the bar angle and axis ratios of the bar structure \citep{wegg13}. The authors do not fit an analytic density model to the data and do not provide enough information about the density field to reconstruct the full-space stellar density distribution of the bulge. Further, this is not a dynamical model for the bar and therefore may not account for all of the mass but rather provides information about the number density of stars in the Galactic bar. \cite{portail15}
+
 \acknowledgements
 APW is supported by a National Science Foundation Graduate Research Fellowship under Grant No.\ 11-44155.
 APW acknowledges the staff at the MPIA for...
+The authors wish to acknowledge Victor Debattista, ...
 This research made use of Astropy, a community-developed core Python package for Astronomy \citep{astropy13}.
 This work additionally relied on Columbia University's \emph{Yeti} compute cluster, and we acknowledge the Columbia HPC support staff for assistance. \\
 
