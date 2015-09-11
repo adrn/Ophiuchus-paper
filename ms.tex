@@ -13,6 +13,7 @@
 \newcommand{\transpose}[1]{{#1}^{\mathsf{T}}}
 \newcommand{\inverse}[1]{{#1}^{-1}}
 \newcommand{\msun}{\ensuremath{\mathrm{M}_\odot}}
+\newcommand{\kms}{\ensuremath{\mathrm{km}~\mathrm{s}^{-1}}}
 
 \newcommand{\project}[1]{\textsl{#1}}
 
@@ -21,12 +22,13 @@
 
 \begin{document}
 
-\title{}
+%\title{Tapping the keg: the Galactic bar peculiarity of the Ophiuchus stream and the Galactic bar}
+\title{Tapping the keg in the Galactic bar}
 \author{Adrian M. Price-Whelan\altaffilmark{\colum,\adrn},
             Branimir Sesar\altaffilmark{\mpia},
             Sarah Pearson\altaffilmark{\colum},
             Kathryn V. Johnston\altaffilmark{\colum},
-            Hans-Walter Rix\altaffilmark{\mpia},
+            Hans-Walter Rix\altaffilmark{\mpia}
 }
 
 % Affiliations
@@ -82,28 +84,28 @@ Our goal is to (1) assess whether the Galactic bar can produce significant numbe
 
 \subsection{Potential models}\label{sec:potential}
 
-To integrate orbits and to compute chaos indicators we must choose a gravitational potential model to represent the potential of the Milky Way. The key feature of the potential that we would like to capture is the time-dependence and triaxiality of the Galactic bar. We construct two parametrized potential models: one with a triaxial, time-dependent (rotating) bulge component and one with a purely spherical bulge, both added to simple models for the disk and halo of the Milky Way. These potentials are meant to be representative rather than definitive models as the global potential is not known.
+To integrate orbits and to compute chaos indicators we must choose a gravitational potential model to represent the potential of the Milky Way. The key feature of the potential that we would like to capture is the time-dependence and triaxiality of the Galactic bar. Recent work has used stellar number counts of XX stars in the Galactic bulge to constrain dynamical models of the bar \citep{portail15}. Measurements of the total mass of the bar feature from this study are largely consistent with past work \citep[e.g.,][]{XX}, however the measured pattern speed and present bar angle are significantly discrepant and this difference is not fully understood. We therefore construct a parametrized potential model consisting of a triaxial, time-dependent (rotating) bulge component added to simple models for the disk and halo of the Milky Way. We describe below how we fix the parameters of the disk and halo, but explore different choices for the time-dependence and orientation of the bar. This potential model is meant to be representative rather than definitive as the potential of the Milky Way in the inner and outer regions of the galaxy are not well known.
 
-In both models, we use a spherical Navarro-Frenk-White potential to represent the dark matter \citep{navarro96}, a Miyamoto-Nagai potential for the disk \citep{miyamoto75}, and a Hernquist spheroid for the central spherical component of the bulge \citep{hernquist90}. Model A consists of just these three components and the total potential is therefore static and axisymmetric. Model B includes a component to represent the Galactic bar. For the bar component, we use a basis function expansion (BFE) of the potential and density of the bar with expansion coefficients derived for a triaxial, exponential bar density \citep[][hereafter W12]{wang12}. We use the pre-computed expansion coefficients used in W12, which were computed from a low-order expansion of the triaxial bar density used in \citet{dwek95}.\footnote{The coefficients presented in W12 are for just the cosine terms (the $A_{lm}$ in \citet{hernquist92} or the $S_{nlm}$ in \citet{lowing11}) because all sine terms have zero coefficients for a triaxial density function.} We have implemented the BFE computation of the potential, density, and gradient of the potential in C and Python and the code is publicly available on \project{GitHub}.\footnote{\url{https://github.com/adrn/biff}} 
+We use a spherical Navarro-Frenk-White potential to represent the dark matter halo \citep{navarro96} (parametrized as $\Phi(r) = -v_h^2\,\frac{\ln{(1 + r/r_s)}}{r/r_s}$) and a Miyamoto-Nagai potential for the disk \citep{miyamoto75}. For the bar component, we use a basis function expansion (BFE) of the potential and density of the bar with expansion coefficients derived for a triaxial, exponential bar density \citep[][hereafter W12]{wang12}. We use the pre-computed expansion coefficients used in W12, which were computed from a low-order expansion of the triaxial bar density used in \citet{dwek95}.\footnote{The coefficients presented in W12 are for just the cosine terms (the $A_{lm}$ in \citet{hernquist92} or the $S_{nlm}$ in \citet{lowing11}) because all sine terms have zero coefficients for a triaxial density function.} We have implemented the BFE computation of the potential, density, and gradient of the potential in C and Python and the code is publicly available on \project{GitHub}.\footnote{\url{https://github.com/adrn/biff}} 
 
-The BFE representation fixes the axis ratios of the bar---that is, the the exponential scale lengths along the three axes of the bar were adopted from \cite{dwek95} when the expansion coefficients were calculated in W12)---and the pattern speed and angle with respect to the Galactic $x$ axis are left as free parameters; all other potential parameter values are given in Table~\ref{tbl:potential-params}. In both Model A and Model B, the mass of the halo is fixed and the mass of the disk, spheroid, and bar are varied in order to qualitatively reproduce the flatness and amplitude of the circular velocity of the Milky Way \citep{bovy12}. Figure~\ref{fig:circ-vel} shows the circular velocity curves and decompositions for each component for models A and B. Figure~\ref{fig:density} shows isodensity contours of the face-on (left) and edge-on (right) surface density for the two potential models \citep[compare to, e.g., Figure 3 in][]{portail15}. 
+The BFE representation fixes the axis ratios of the bar---that is, the the exponential scale lengths along the three axes of the bar were adopted from \cite{dwek95} when the expansion coefficients were calculated in W12)---but the pattern speed and angle with respect to the Galactic $x$ axis are left as free parameters; all other potential parameter values are given in Table~\ref{tbl:potential-params}. The mass of the halo is fixed and the mass of the disk and bar are varied in order to qualitatively reproduce the flatness and amplitude of the circular velocity curve of the Milky Way \citep{bovy12}. Figure~\ref{fig:circ-vel} shows the circular velocity along the line connecting the Sun to the Galactic center in this model (the Galactic $x$ axis). Figure~\ref{fig:density} shows isodensity contours of the face-on (left) and edge-on (right) surface density for the model \citep[compare to, e.g., Figure 3 in][]{portail15}. 
 
 \begin{table*}[ht]
 \begin{center}
-	\begin{tabular}{ c | c | c | c}
+	\begin{tabular}{ c | c | c }
 	         \toprule
-	         Component & Parameter & {\bf Model A} & {\bf Model B}\\\toprule
-		Disk & $M_{\rm disk}$ &  & \\
-		& $a$ &  & \\
-		& $b$ &  &  \\\midrule
-	         Halo & $v_h$ &  & \\
-		& $r_s$ &  & \\\midrule
-		Spheroid & $M_{\rm sph}$ &  & \\
-		& $c$ &  & \\\midrule
-		Bar & $M_{\rm bar}$ & -- & $1.8 \times 10^{10}~\msun$ \\
+	         Component & Parameter & Value \\\toprule
+		Disk & $M_{\rm disk}$ & $5 \times 10^{10}~\msun$ \\
+		& $a$ & 3~{\rm kpc}\\
+		& $b$ & 0.28~{\rm kpc} \\\midrule
+	         Halo & $v_h$ & 185.8~\kms\\
+		& $r_s$ & 30~kpc \\\midrule
+%		Spheroid & $M_{\rm sph}$ & \\
+%		& $c$ &  \\\midrule
+		Bar & $M_{\rm bar}$ & $1.8 \times 10^{10}~\msun$ \\
 		\bottomrule
 		\end{tabular}
-	\caption{The disk potential scale lengths ($a$, $b$) were adopted following \citep{bovy15-galpy} to match the exponential scale length of the disk \citep{bovyrix13} and local dark-matter density \citep[e.g.,][]{bovytremaine12}. The halo, NFWpotential is parametrized as $\Phi(r) = -v_h^2\,\frac{\ln{(1 + r/r_s)}}{r/r_s}$. The bar mass for Model B is taken from recent 3D density modeling of red clump stars in the Galactic bulge \citep{portail15}. \label{tbl:potential}}
+	\caption{The disk potential scale lengths ($a$, $b$) were adopted following \citep{bovy15-galpy} to match the exponential scale length of the disk \citep{bovyrix13} and local dark-matter density \citep[e.g.,][]{bovytremaine12}. The bar mass is taken from recent 3D density modeling of red clump stars in the Galactic bulge \citep{portail15}. \label{tbl:potential-params}}
 \end{center}
 \end{table*}
 
@@ -132,5 +134,25 @@ This work additionally relied on Columbia University's \emph{Yeti} compute clust
 
 \bibliographystyle{apj}
 \bibliography{refs}
+
+% ---------------------------------------------------------------------------------
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/circ-vel.pdf}
+\caption{} 
+\label{fig:circ-vel}
+\end{center}
+\end{figure}
+
+% ---------------------------------------------------------------------------------
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/surface-density.png}
+\caption{} 
+\label{fig:surface-density}
+\end{center}
+\end{figure}
 
 \end{document}
