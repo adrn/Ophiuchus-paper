@@ -9,6 +9,8 @@
 \usepackage[caption=false]{subfig}
 \usepackage{multirow}
 
+\newcommand{\DM}{{\rm DM}}
+
 % TO DO
 \usepackage{graphicx} 
 \usepackage{color}
@@ -19,10 +21,9 @@
 %\title{Tapping the keg: the Galactic bar peculiarity of the Ophiuchus stream and the Galactic bar}
 \title{Spending too much time at the Galactic bar: did the Ophiuchus stream form on a chaotic orbit?}
 \author{Adrian M. Price-Whelan\altaffilmark{\colum,\adrn},
-            Branimir Sesar\altaffilmark{\mpia}, ...
-%            Sarah Pearson\altaffilmark{\colum},
-%            Kathryn V. Johnston\altaffilmark{\colum},
-%            Hans-Walter Rix\altaffilmark{\mpia}
+            Branimir Sesar\altaffilmark{\mpia}, 
+            Kathryn V. Johnston\altaffilmark{\colum},
+            Hans-Walter Rix\altaffilmark{\mpia}
 }
 
 % Affiliations
@@ -64,7 +65,7 @@ The existence of or lack of stream fans may provide an interesting constraint on
 
 The Ophiuchus stream \citep{bernard14, sesar15} is a recently discovered stellar tidal stream that sits above the Galactic bulge at a Galactocentric radius and height $(R,z) \approx (1, 4.3)~{\rm kpc}$. All observational evidence suggests that the stream is a totally disrupted globular cluster: The stream stars have (1) a small positional dispersion orthogonal to the extended direction of the stream ($\approx$10 pc); (2) a small velocity dispersion $\approx$0.4 ${\rm km}~{\rm s}^{-1}$; (3) an old stellar population ($\approx$12 Gyr) estimated from isochrone fitting; and (4) no detectable over-density along the stream that could be  the progenitor system \citep[][hereafter S15a]{sesar15}. 
 
-The deprojected length of the visible part of the stream ($\approx$1.5 kpc) is short for the age of its stellar population. S15a fit an orbit to the kinematics of the stream stars in a static, axisymmetric model for the gravitational field of the inner Galaxy and ran N-body simulations of globular clusters on this orbit. S15a find that---on this orbit---the observed portion of the stream must have been formed in the last $\lesssim$400 Myr for the stream to remain as short as it is observed. This dynamical age is at odds with the old stellar population. More recently, a significant observational effort has followed-up nearly all BHB star candidates within XX deg of the stream to obtain radial velocities to identify more stream members \citep{sesar15b}. The stream has a very distinct and large line-of-sight velocity ($\approx$290 \kms) and is therefore easily detected above the background halo population. Of the \todo{XX} stars followed up, six have velocities significantly discrepant with the halo population. Of these six stars, two lie within the previously detected extent of the stream and have velocities consistent with the previously identified stream members. The remaining four stars lie close to an extrapolation of the stream, have velocities much larger than halo stars in this region ($v_{\rm los}>230$ \kms), but have a velocity dispersion $\approx$75 times the measured internal velocity dispersion of the stream stars and positional spread much larger than the orthogonal positional dispersion of the main part of the stream. These low-density, high-dispersion features were not modeled in S15a and N-body simulations on the orbit fit from the previous work do not  reproduce these features.
+The deprojected length of the visible part of the stream ($\approx$1.5 kpc) is short given the age of its stellar population. S15a fit an orbit to the kinematics of the stream stars in a static, axisymmetric model for the gravitational field of the inner Galaxy and ran N-body simulations of globular clusters on this orbit. S15a find that---on this orbit---the observed portion of the stream must have been formed in the last $\lesssim$400 Myr for the stream to remain as short as it is observed. This dynamical age is at odds with the old stellar population. More recently, a significant observational effort has followed-up nearly all blue horizontal branch (BHB) star candidates within XX deg of the stream to obtain radial velocities to identify more stream members \citep{sesar15b}. The stream has a very distinct and large line-of-sight velocity ($\approx$290 \kms) and is therefore easily detected above the background halo population. Of the \todo{XX} stars followed up, six have velocities significantly discrepant with the halo population. Of these six stars, two lie within the previously detected extent of the stream and have velocities consistent with the previously identified stream members. The remaining four stars lie close to an extrapolation of the stream, have velocities much larger than halo stars in this region ($v_{\rm los}>230$ \kms), but have a velocity dispersion $\approx$75 times the measured internal velocity dispersion of the stream stars and positional spread much larger than the orthogonal positional dispersion of the main part of the stream. These low-density, high-dispersion features were not modeled in S15a and N-body simulations on the orbit fit from the previous work do not  reproduce these features.
 
 It is not surprising that the orbit fit in the static, axisymmetric potential model used in S15a leads to a dynamical puzzle and failed to predict the new features: it is now well-known that the Galactic bulge contains a triaxial, bar-like structure several kpc in size \citep[e.g.,][]{blitzXX, wegg13, MANY}. Given the proximity of the stream to the center of the Galaxy, the time-dependent, triaxial potential of the Galactic bar must be taken into account when modeling the orbit of the progenitor system. The presence of a bar-like perturbation to the potential will change the possible orbit of the stream progenitor and will drastically change the resonance structure of orbits in the inner galaxy \citep{athanassoula, portail15b MANY}, potentially introducing a significant number of chaotic orbits in this region \citep{weinberg15}.
 
@@ -74,7 +75,7 @@ In Section~\ref{sec:method} we describe the methods used in this work: in Sectio
 
 \section{Methods}\label{sec:method}
 
-Our goal is to (1) assess whether the Galactic bar can produce significant numbers of chaotic orbits in the inner Galaxy in the vicinity of the Ophiuchus stream and (2) if chaotic density evolution of tidal debris stripped from the progenitor of this stream can explain the apparent shortness of the stream and low-density, high-dispersion ends. In this section, we describe the potential models we use to represent the galaxy and describe the methods we use to detect and quantify the strength of chaos for orbits. We then describe a simplified version of the \streakline\ method that we use to generate mock stellar streams \citep{kuepper12}. 
+Our goal is to (1) assess whether the Galactic bar can produce chaotic orbits in the inner Galaxy in the vicinity of the Ophiuchus stream and (2) if chaotic density evolution of tidal debris stripped from the progenitor of this stream can explain the apparent shortness of the stream and low-density, high-dispersion ends. In this section, we describe the potential models we use to represent the galaxy and describe the methods we use to detect and quantify the strength of chaos for orbits. We then describe the method we use for fitting orbits to the stream stars. Finally, we describe the method we use to generate mock stellar streams. 
 
 \subsection{Potential models}\label{sec:potential}
 
@@ -133,9 +134,26 @@ For comparison, we also define a time-independent potential model with a purely 
 \end{center}
 \end{table*}
 
-\subsection{Orbit grid initial conditions}\label{sec:orbit-grids}
+\subsection{Fitting orbits to the Ophiuchus stream}\label{sec:orbit-fit}
 
-We wish to classify and analyze orbits around the orbit of the progenitor of the Ophiuchus stream, however the progenitor has not been found. We therefore take the medan position and velocity of stream members  from previous work and sample from the error distribution to generate initial conditions (these values are given in Table 3 of S15). We assume the mean Galactic longitude and latitude are fixed but generate samples in distance modulus, proper motions, and line-of-sight velocity assuming all uncertainties are Gaussian and independent. For each sample, we compute the proper motion angle (on the sky, in Galactic coordinates) and reject any sample with an angle relative to the elongation of the stream $>15^\circ$. We convert all sampled heliocentric coordinates to Galactocentric, cartesian coordinates by fixing the Sun to $(x,y,z) = (-8,0,0)~{\rm kpc}$ with $(v_x,v_y,v_z) = (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}$ \citep{schonrich10, bovy12}. 
+In each of the potentials described above, we fit orbits to observed kinematic properties of BHB stars that are confirmed members of the Ophiuchus stream \citep{sesar2015a, sesar2015b}. We use a methodology similar to that used in \cite{koposov10} and \citep{sesar2015a}. Our goal is to infer the posterior probability distributions over the orbital initial conditions given a potential, $\Phi$, and kinematic data for stream stars---$\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$ for the $i$-th star, where ($l$, $b$) are Galactic coordinates, $\DM$ is the distance modulus, ($\mu_l$, $\mu_b$) are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the extent of the stream and centered on the median sky position of the BHB stars of \cite{sesar2015a}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). 
+
+We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data.
+
+We assume that each observed kinematic component is independent so that the likelihood of the data for a given star, $\bs{x}_i$, with uncertainties $\bs{\sigma}_i$ is given by the product over the likelihoods for each dimension of the data. Defining $\bs{\theta} = (\Phi, t_b, t_f)$,
+\begin{multline}
+	p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}) = p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) \, p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta})\\ 
+	\times p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) \, p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) \, p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta})
+\end{multline}
+
+, however the progenitor has not been found. We therefore take the medan position and velocity of stream members  from previous work and sample from the error distribution to generate initial conditions (these values are given in Table 3 of S15). We assume the mean Galactic longitude and latitude are fixed but generate samples in distance modulus, proper motions, and line-of-sight velocity assuming all uncertainties are Gaussian and independent. For each sample, we compute the proper motion angle (on the sky, in Galactic coordinates) and reject any sample with an angle relative to the elongation of the stream $>15^\circ$. We convert all sampled heliocentric coordinates to Galactocentric, cartesian coordinates by fixing the Sun to $(x,y,z) = (-8,0,0)~{\rm kpc}$ with $(v_x,v_y,v_z) = (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}$ \citep{schonrich10, bovy12}. 
+
+In what follows, we assume the Galactocentric position and velocity of the Sun are: 
+\begin{align}
+	(x,y,z)_\odot &= (-8,0,0)~{\rm kpc}\\
+	(v_x,v_y,v_z)_\odot &= (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}
+\end{align}
+\citep{8kpref??, schonrich10, bovy12}. 
 
 \subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
 
@@ -159,7 +177,7 @@ where the index $k$ refers to the window number and $\tau$ is the shift in time 
 
 \subsection{Generating mock streams}\label{sec:mocks}
 
-To generate mock stellar streams, we use a method similar to \streakline\ \citep{kuepper12}. For a given set of ``final conditions''---here, a position and velocity sampled from the observational error distribution for the Ophiuchus stream; Section~\ref{sec:orbit-grids}---we integrate the orbit backwards in time for a given integration period, $T$, in the specified potential. To generate a mock stream, we must set a progenitor mass, $m$, \todo{and mass-loss rate, $\dot{m}$} which sets the tidal radius of the mock disrupting globular cluster. From the endpoint of the backwards-integration (e.g., the initial conditions), we begin integrating the orbit forward in time, but now at each time-step a test-particle is released at each Lagrange point of the parent, progenitor orbit. The position of the test-particle is sampled from an isotropic Gaussian centered on each of the Lagrange points and the velocity of the particle is set equal to the velocity of the progenitor with a small Gaussian scatter in the radial direction. \todo{why these choices?} This method has been shown to reproduce the morphologies of N-body simulations of globular cluster streams, but requires far less computing time because it relies only on integrating test-particle orbits.
+To generate mock stellar streams, we use the method presented in \citep{fardal15} (similar to the \streakline\ method presented in \citet{kuepper12}, but here the stars are released with some dispersion in position and velocity). For a given set of ``final conditions''---here, a position and velocity sampled from the observational error distribution from the orbit fit to the Ophiuchus stream (Section~\ref{sec:orbit-grids})---we integrate the orbit backwards in time for a given integration period, $T$, in each potential model. From the endpoint of the backwards-integration (e.g., the initial conditions), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each Lagrange point of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The position of the test-particle is sampled from an isotropic Gaussian centered on each of the Lagrange points and the velocity of the particle is set equal to the velocity of the progenitor with a small Gaussian scatter in the radial direction. \todo{why these choices?} This method has been shown to reproduce the morphologies of N-body simulations of globular cluster streams, but requires far less computing time because it relies only on integrating test-particle orbits.
 
 \section{Results}
 
@@ -171,6 +189,20 @@ Using the orbit initial conditions described above (Section~\ref{sec:orbit-grids
 
 We have found that a qualitative but observationally-motivated potential model for the Galactic bar generates a significant number of chaotic orbits in the vicinity of the recently-discovered Ophiuchus stream. By sampling many possible phase-space 6D positions and velocities for the stream centroid from the observational error distribution, we have shown that most possible orbits are strongly chaotic in the time-dependent, barred potential model for the Milky Way, but are mostly regular, eccentric orbits in a static, axisymmetric potential. We have shown that---using \streakline\ models of the stream density---the apparent shortness of the stream and the existence of nearby, high-dispersion stars can be explained by chaotic density evolution of the stripped stars. This is the first time chaos has been used to explain the morphology and [...] of a stellar stream. This work demonstrates the importance of the Galactic bar on the potential of the inner Milky Way and has important implications for future modeling of streams near in this region. This result also motivates deep imaging around the Ophiuchus stream to measure the density contrast of the ``fanned'' debris compared to the main stream and to find more candidate stars associated with chaotic tidal debris.
 
+What is a successful model?
+- Sharp density drop
+	- BHB density falls off sooner? Is that just small-number statistics?
+	- Density profile along the stream / how sharp is the drop?
+	- Density contrast for BHB stars?
+- Increased positional dispersion
+	- The 4 new stars
+- Velocity dispersion of the 4 new stars
+	- velocity dispersion ~ 40 times internal velocity dispersion of stream stars
+- What can we say about the connection between chaotic timescale and the length of the stream? Is it the onset time for chaos, or are all orbits strongly chaotic?
+	- for a given orbit and model, paint the particles to say what the mass loss rate would have to be to match the obs.
+- "It's stupid to make it more complicated" -- Kathryn Johnston
+- from painting particles, Length of stream --> dispersion
+
 \acknowledgements
 APW is supported by a National Science Foundation Graduate Research Fellowship under Grant No.\ 11-44155.
 APW acknowledges the staff at the MPIA for...
@@ -180,6 +212,10 @@ This work additionally relied on Columbia University's \emph{Yeti} compute clust
 
 \bibliographystyle{apj}
 \bibliography{refs}
+
+\appendix
+\section{Stream coordinates} \label{sec:rotationmatrix}
+\todo{Add this!}
 
 % ---------------------------------------------------------------------------------
 \clearpage
