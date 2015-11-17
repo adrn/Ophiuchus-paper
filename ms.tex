@@ -10,6 +10,7 @@
 \usepackage{multirow}
 
 \newcommand{\DM}{{\rm DM}}
+\newcommand{\norm}{\mathcal{N}}
 
 % TO DO
 \usepackage{graphicx} 
@@ -136,24 +137,58 @@ For comparison, we also define a time-independent potential model with a purely 
 
 \subsection{Fitting orbits to the Ophiuchus stream}\label{sec:orbit-fit}
 
-In each of the potentials described above, we fit orbits to observed kinematic properties of BHB stars that are confirmed members of the Ophiuchus stream \citep{sesar2015a, sesar2015b}. We use a methodology similar to that used in \cite{koposov10} and \citep{sesar2015a}. Our goal is to infer the posterior probability distributions over the orbital initial conditions given a potential, $\Phi$, and kinematic data for stream stars---$\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$ for the $i$-th star, where ($l$, $b$) are Galactic coordinates, $\DM$ is the distance modulus, ($\mu_l$, $\mu_b$) are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the extent of the stream and centered on the median sky position of the BHB stars of \cite{sesar2015a}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). 
+In each of the potentials described above, we fit orbits to observed kinematic properties of BHB stars that are confirmed members of the Ophiuchus stream \citep{sesar15a, sesar15b}. Our goal is to infer the posterior probability distributions over orbital initial conditions, $\bs{w}_0=(l, b, \DM, \mu_l, \mu_b, v_r)_0$, given a potential, $\Phi$, and kinematic data for each $i$ stream star, $\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$. In this notation, $(l, b)$ are Galactic coordinates, $\DM$ is the distance modulus, $(\mu_l, \mu_b)$ are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the stream and centered on the median sky position of the BHB stars in the densest part of the stream \cite[all BHB stars except the `fanned' stars: cand15, cand26, cand49, cand54 from][]{sesar15b}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). This methodology is similar to that used in \cite{koposov10} and \cite{sesar15a}.
 
-We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data.
+\subsubsection{Likelihood}
 
-We assume that each observed kinematic component is independent so that the likelihood of the data for a given star, $\bs{x}_i$, with uncertainties $\bs{\sigma}_i$ is given by the product over the likelihoods for each dimension of the data. Defining $\bs{\theta} = (\Phi, t_b, t_f)$,
-\begin{multline}
-	p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}) = p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) \, p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta})\\ 
-	\times p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) \, p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) \, p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta})
-\end{multline}
+We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: in observed coordinates, these are the on-sky positional dispersion, $s_{\phi_2}$, a distance (modulus) dispersion, $s_{\DM}$, and a radial velocity dispersion, $s_{v_r}$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data. For brevity in the equations below, we define $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ and $\bs{\theta} = (\bs{w}_0, \Phi, t_b, t_f)$.
 
-, however the progenitor has not been found. We therefore take the medan position and velocity of stream members  from previous work and sample from the error distribution to generate initial conditions (these values are given in Table 3 of S15). We assume the mean Galactic longitude and latitude are fixed but generate samples in distance modulus, proper motions, and line-of-sight velocity assuming all uncertainties are Gaussian and independent. For each sample, we compute the proper motion angle (on the sky, in Galactic coordinates) and reject any sample with an angle relative to the elongation of the stream $>15^\circ$. We convert all sampled heliocentric coordinates to Galactocentric, cartesian coordinates by fixing the Sun to $(x,y,z) = (-8,0,0)~{\rm kpc}$ with $(v_x,v_y,v_z) = (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}$ \citep{schonrich10, bovy12}. 
-
-In what follows, we assume the Galactocentric position and velocity of the Sun are: 
+For a given set of initial conditions ($\bs{w}_0$), we compute a model orbit as follows: (1) transform the initial conditions to Galactocentric coordinates, where we take the position and velocity of the Sun to be 
 \begin{align}
 	(x,y,z)_\odot &= (-8,0,0)~{\rm kpc}\\
 	(v_x,v_y,v_z)_\odot &= (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}
 \end{align}
-\citep{8kpref??, schonrich10, bovy12}. 
+\citep{8kpref??, schonrich10, bovy12}, (2) integrate the orbit forward and backward by $t_f$ and $t_b$, respectively, in the potential $\Phi$, (3) transform all orbit points (time-steps) back to observed coordinates, and (4) define interpolating functions for each coordinate as a function of stream longitude, $\phi_1$, using cubic splines---e.g., functions $\widetilde{\phi}_{2}(\phi_1)$, $\widetilde{\DM}(\phi_1)$, $\widetilde{\mu_l}(\phi_1)$, $\widetilde{\mu_b}(\phi_1)$, $\widetilde{v_r}(\phi_1)$. These functions let us compute the predicted values of each of these coordinates at the longitudes of each observed star, $\phi_{1,i}$.
+
+We assume that each observed kinematic component is independent so that the likelihood of the data for a given star, $\bs{x}_i$, with uncertainties, $\bs{\sigma}_i$, is given by the product over the likelihoods for each dimension of the data:
+\begin{multline}
+	p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}) = p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) \, p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta})\\ 
+	\times p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) \, p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) \, p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}).
+\end{multline}
+The uncertainties in these observed coordinate components are assumed to be normally distributed away from the model values: using the notation
+\begin{align}
+	\norm(x \given \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi \sigma^2}} \, \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{align}
+the likelihoods are
+\begin{align}	
+	p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) &= \norm(\phi_{2,i} \given \widetilde{\phi}_{2}(\phi_{1,i}), s^2_{\phi_2})\\
+	p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta}) &= \norm(\DM_i \given \widetilde{\DM}(\phi_{1,i}), s^2_{\DM} + \sigma^2_{\DM,i})\\
+	p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) &= \norm(\mu_{l,i} \given \widetilde{\mu_{l}}(\phi_{1,i}), \sigma^2_{\mu_{l,i}})\\
+	p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) &= \norm(\mu_{b,i} \given \widetilde{\mu_{b}}(\phi_{1,i}), \sigma^2_{\mu_{b,i}})\\
+	p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}) &= \norm(v_{r,i} \given \widetilde{v_r}(\phi_{1,i}), s^2_{v_r} + \sigma^2_{v_r,i}).
+\end{align}
+
+\subsubsection{Priors}
+
+For the intrinsic dispersion parameters, we use logarithmic (scale-invariant) priors such that $p(s) \propto s^{-1}$. For the integration time parameters,\footnote{We take the present-day to be $t=0$} we use uniform priors, $\mathcal{U}(a,b)$, over the range $a$--$b$:
+\begin{align}
+	p(t_f) &= \mathcal{U}(1,100)~{\rm Myr}\\
+	p(t_b) &= \mathcal{U}(-100,-1)~{\rm Myr}.
+\end{align}
+However, for computational efficiency, we place strong priors on the minimum and maximum longitudes of the model points, $(\phi_{1,{\rm min}},\phi_{1,{\rm max}})$ so that the model orbit does not integrate for longer than necessary. In particular, we set
+\begin{align}
+	p(\phi_{1,{\rm min}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm min}} \given \min(\phi_{1,i}), s^2_{\phi_2})\\
+	p(\phi_{1,{\rm max}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm max}} \given \max(\phi_{1,i}), s^2_{\phi_2}).
+\end{align}
+For the orbital initial conditions, we assume uniform priors in each cartesian position component over the range $(-200,200)~{\rm kpc}$. For the velocity, we assume a Gaussian prior in the magnitude of the total velocity, $v$, with a dispersion of $150~\kms$,
+\begin{equation}
+	\norm(v \given 0, (150~\kms)^2)
+\end{equation}
+We keep the potential, $\Phi$, fixed.
+
+\subsubsection{Initializing the MCMC}
+
+...
 
 \subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
 
