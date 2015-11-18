@@ -135,7 +135,7 @@ For comparison, we also define a time-independent potential model with a purely 
 \end{center}
 \end{table*}
 
-\subsection{Fitting orbits to the Ophiuchus stream}\label{sec:orbit-fit}
+\subsection{Fitting orbits to the Ophiuchus stream}\label{sec:orbitfit}
 
 In each of the potentials described above, we fit orbits to observed kinematic properties of BHB stars that are confirmed members of the Ophiuchus stream \citep{sesar15a, sesar15b}. Our goal is to infer the posterior probability distributions over orbital initial conditions, $\bs{w}_0=(l, b, \DM, \mu_l, \mu_b, v_r)_0$, given a potential, $\Phi$, and kinematic data for each $i$ stream star, $\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$. In this notation, $(l, b)$ are Galactic coordinates, $\DM$ is the distance modulus, $(\mu_l, \mu_b)$ are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the stream and centered on the median sky position of the BHB stars in the densest part of the stream \cite[all BHB stars except the `fanned' stars: cand15, cand26, cand49, cand54 from][]{sesar15b}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). This methodology is similar to that used in \cite{koposov10} and \cite{sesar15a}.
 
@@ -167,58 +167,66 @@ the likelihoods are
 	p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) &= \norm(\mu_{b,i} \given \widetilde{\mu_{b}}(\phi_{1,i}), \sigma^2_{\mu_{b,i}})\\
 	p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}) &= \norm(v_{r,i} \given \widetilde{v_r}(\phi_{1,i}), s^2_{v_r} + \sigma^2_{v_r,i}).
 \end{align}
+We assume the data from each star is independent and identically distributed (i.i.d.) so that the full likelihood is the product over the likelihoods for each star:
+\begin{equation}
+	 p(\{\bs{x}_i\} \given \{\bs{\sigma}_i\}, \bs{s}, \bs{\theta}) = \prod_i p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}).\label{eq:likelihood}
+\end{equation}
 
 \subsubsection{Priors}
 
-For the intrinsic dispersion parameters, we use logarithmic (scale-invariant) priors such that $p(s) \propto s^{-1}$. For the integration time parameters,\footnote{We take the present-day to be $t=0$} we use uniform priors, $\mathcal{U}(a,b)$, over the range $a$--$b$:
+For the intrinsic dispersion parameters, we use logarithmic (scale-invariant) priors such that $p(s) \propto s^{-1}$. For the integration time parameters, we use uniform priors, $\mathcal{U}(a,b)$ (over the range $a$--$b$),
 \begin{align}
-	p(t_f) &= \mathcal{U}(1,100)~{\rm Myr}\\
+	p(t_f) &= \mathcal{U}(1,100)~{\rm Myr}\label{eq:prior1}\\
 	p(t_b) &= \mathcal{U}(-100,-1)~{\rm Myr}.
 \end{align}
-However, for computational efficiency, we place strong priors on the minimum and maximum longitudes of the model points, $(\phi_{1,{\rm min}},\phi_{1,{\rm max}})$ so that the model orbit does not integrate for longer than necessary. In particular, we set
+Note that present-day is $t=0$. For computational efficiency, we place strong priors on the minimum and maximum longitudes of the model points, $(\phi_{1,{\rm min}},\phi_{1,{\rm max}})$ so that the model orbit does not integrate for longer than necessary. In particular, we set
 \begin{align}
 	p(\phi_{1,{\rm min}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm min}} \given \min(\phi_{1,i}), s^2_{\phi_2})\\
 	p(\phi_{1,{\rm max}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm max}} \given \max(\phi_{1,i}), s^2_{\phi_2}).
 \end{align}
-For the orbital initial conditions, we assume uniform priors in each cartesian position component over the range $(-200,200)~{\rm kpc}$. For the velocity, we assume a Gaussian prior in the magnitude of the total velocity, $v$, with a dispersion of $150~\kms$,
+For the orbital initial condition components, we use uniform priors in each cartesian position component over the range $(-200,200)~{\rm kpc}$. For velocity, we use a Gaussian prior on the magnitude of the total velocity, $v$, with a dispersion of $150~\kms$,
 \begin{equation}
-	\norm(v \given 0, (150~\kms)^2)
+	\norm(v \given 0, (150~\kms)^2) \label{eq:prior2}
 \end{equation}
-We keep the potential, $\Phi$, fixed.
+We keep the potential, $\Phi$, fixed. In total, this model has 10 parameters (5 phase-space coordinates, 5 nuisance parameters).
 
-\subsubsection{Initializing the MCMC}
+\subsubsection{Sampling from the posterior distributions}
 
-...
+The full expression for the posterior probability, $p(\bs{s}, \bs{w}_0, t_b, t_f \given \{\bs{x}_i\}, \{\bs{\sigma}_i\}, \Phi)$, is the joint likelihood (Equation~\ref{eq:likelihood}) multiplied by all priors described above (Equations~\ref{eq:prior1}--\ref{eq:prior2}). We use an ensemble Markov Chain Monte Carlo (MCMC) algorithm \citep{goodman10} implemented in \python (\package{emcee}) to draw samples from this posterior distribution \citep{foremanmackey13}. The algorithm uses an ensemble of individual ``walkers'' to adapt to the geometry of the parameter-space being explored. In all cases, we use 80 walkers.
 
-\subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
+To initialize these walkers, we first run an optimization routine to maximize the likelihood. In detail, we use the Powell algorithm implemented in \package{scipy} \citep{powell64, scipy} to minimize the negative, log-likelihood. To generate initial conditions for the walkers, we sample from Gaussian distributions centered on the maximum likelihood values. For the coordinates, we set the dispersions of these Gaussians to 1/1000 of the median uncertainties of the stars. For the nuisance parameters, we set the dispersions to 1/1000 of their maximum likelihood values. 
 
-Regular orbits are quasi-periodic: any phase-space component of the orbit can be decomposed in terms of a Fourier series, e.g.,
-\begin{equation}
-	x(t) = \sum^\infty_k \, a_{x,k}\, e^{i\, \omega_k \, t}.
-\end{equation}
-The amplitudes, $\bs{a}_k$ are constants which determine the strength of each mode, and the frequencies in each Fourier mode, $\omega_k$, are linear, integer combinations of the fundamental frequencies of the orbit, $\bs{\Omega}$---that is,
-\begin{equation}
-	\omega_k = \bs{n}_k \cdot \bs{\Omega}
-\end{equation}
-where $\bs{n}_k$ is a integer vector with dimensionality equal to the number of degrees of freedom of the gravitational potential \citep[e.g.,][]{binney82, binneytremaine}. The fundamental frequencies of a regular orbit are directly related to the orbital actions, a set of integrals of motion intricately related to the [...] of Hamiltonian and nonlinear dynamics \citep[e.g.,][]{??}. The fundamental frequencies can be approximated for numerically-integrated orbital time series by measuring the positions and amplitudes of spectral lines in the Fourier transform of the orbital components. A very accurate procedure for numerically computing the frequencies was developed by \citet{laskar93} and has been re-implemented in \python\ and released as open-source software \citep[\superfreq;][]{superfreq}. 
-
-Chaotic orbits have no actions and therefore no fundamental frequencies. The frequencies and actions drift erratically in time with rates that depend on the structure of resonances surrounding such orbits. The evolution of the frequencies changes the configuration-space appearance of finite sub-sections of chaotic orbits and greatly enhances the density evolution of ensembles of nearby chaotic orbits; this has a dramatic effect on the morphological evolution of tidal streams \citep[e.g.,][]{apw15-chaos}. Numerically-integrated trajectories can be identified as chaotic orbits by the detection of frequency diffusion \citep[e.g.,][]{laskar96, valluri98}. 
-
-The accuracy of the frequency-finding method (\superfreq) allows for detecting very small changes in the frequencies of even mildly chaotic orbits. Measuring the rate of frequency diffusion is therefore a powerful tool for detecting and characterizing dynamical chaos \citep[e.g.,][]{many}. From measuring the frequencies in many consecutive, overlapping time-windows along a numerically integrated orbit, we define the frequency diffusion rate, $DERP$, as
-\begin{equation}
-	yo
-\end{equation}
-where the index $k$ refers to the window number and $\tau$ is the shift in time between two consecutive windows. We note that this definition differs from previous, coarse approximations of the diffusion rate that simply differenced the frequencies computed in two consecutive time windows. We use this frequency diffusion rate to identify chaotic orbits integrated in the potential models described above.
+For each potential, we run the MCMC walkers for a burn-in period of 128 steps and then re-initialize the walkers from their positions at the end of this run. This erases any relics of the initialization procedure outlined above. After burn-in, we run the walkers for an additional 256 steps.
+%
+%\subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
+%
+%Regular orbits are quasi-periodic: any phase-space component of the orbit can be decomposed in terms of a Fourier series, e.g.,
+%\begin{equation}
+%	x(t) = \sum^\infty_k \, a_{x,k}\, e^{i\, \omega_k \, t}.
+%\end{equation}
+%The amplitudes, $\bs{a}_k$ are constants which determine the strength of each mode, and the frequencies in each Fourier mode, $\omega_k$, are linear, integer combinations of the fundamental frequencies of the orbit, $\bs{\Omega}$---that is,
+%\begin{equation}
+%	\omega_k = \bs{n}_k \cdot \bs{\Omega}
+%\end{equation}
+%where $\bs{n}_k$ is a integer vector with dimensionality equal to the number of degrees of freedom of the gravitational potential \citep[e.g.,][]{binney82, binneytremaine}. The fundamental frequencies of a regular orbit are directly related to the orbital actions, a set of integrals of motion intricately related to the [...] of Hamiltonian and nonlinear dynamics \citep[e.g.,][]{??}. The fundamental frequencies can be approximated for numerically-integrated orbital time series by measuring the positions and amplitudes of spectral lines in the Fourier transform of the orbital components. A very accurate procedure for numerically computing the frequencies was developed by \citet{laskar93} and has been re-implemented in \python\ and released as open-source software \citep[\superfreq;][]{superfreq}. 
+%
+%Chaotic orbits have no actions and therefore no fundamental frequencies. The frequencies and actions drift erratically in time with rates that depend on the structure of resonances surrounding such orbits. The evolution of the frequencies changes the configuration-space appearance of finite sub-sections of chaotic orbits and greatly enhances the density evolution of ensembles of nearby chaotic orbits; this has a dramatic effect on the morphological evolution of tidal streams \citep[e.g.,][]{apw15-chaos}. Numerically-integrated trajectories can be identified as chaotic orbits by the detection of frequency diffusion \citep[e.g.,][]{laskar96, valluri98}. 
+%
+%The accuracy of the frequency-finding method (\superfreq) allows for detecting very small changes in the frequencies of even mildly chaotic orbits. Measuring the rate of frequency diffusion is therefore a powerful tool for detecting and characterizing dynamical chaos \citep[e.g.,][]{many}. From measuring the frequencies in many consecutive, overlapping time-windows along a numerically integrated orbit, we define the frequency diffusion rate, $DERP$, as
+%\begin{equation}
+%	yo
+%\end{equation}
+%where the index $k$ refers to the window number and $\tau$ is the shift in time between two consecutive windows. We note that this definition differs from previous, coarse approximations of the diffusion rate that simply differenced the frequencies computed in two consecutive time windows. We use this frequency diffusion rate to identify chaotic orbits integrated in the potential models described above.
 
 \subsection{Generating mock streams}\label{sec:mocks}
 
-To generate mock stellar streams, we use the method presented in \citep{fardal15} (similar to the \streakline\ method presented in \citet{kuepper12}, but here the stars are released with some dispersion in position and velocity). For a given set of ``final conditions''---here, a position and velocity sampled from the observational error distribution from the orbit fit to the Ophiuchus stream (Section~\ref{sec:orbit-grids})---we integrate the orbit backwards in time for a given integration period, $T$, in each potential model. From the endpoint of the backwards-integration (e.g., the initial conditions), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each Lagrange point of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The position of the test-particle is sampled from an isotropic Gaussian centered on each of the Lagrange points and the velocity of the particle is set equal to the velocity of the progenitor with a small Gaussian scatter in the radial direction. \todo{why these choices?} This method has been shown to reproduce the morphologies of N-body simulations of globular cluster streams, but requires far less computing time because it relies only on integrating test-particle orbits.
+To generate mock stellar streams, we use the method presented in \citep{fardal14}: star particles are `released' from a progenitor system near the Lagrange points with some dispersion in position and velocity set by the mass and orbit of the progenitor (this is similar to the \streakline\ method of \citet{kuepper12} but with finite dispersions). To generate progenitor orbits, we draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members (Section~\ref{sec:orbit-fit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits.
 
-\section{Results}
+\section{Results I: Orbit fits?}
 
 Using the orbit initial conditions described above (Section~\ref{sec:orbit-grids}), we integrate orbits and compute the frequency diffusion rate for the static potential and for XX barred models with varied initial bar angle and pattern speed. We find that [...] 
 
-\subsection{Reproducing the observed properties of the stream}\label{sec:results2}
+\section{Results 2: Models for the Ophiuchus stream}
 
 \section{Conclusions}\label{sec:conclusions}
 
