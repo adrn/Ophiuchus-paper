@@ -73,7 +73,7 @@ Recent work has shown that chaos can dramatically alter the density evolution of
 \begin{enumerate}
 	\item the apparent shortness and fast density truncation of the stream;
 	\item the increased positional dispersion of the four new candidate members from S15b;
-	\item the much larger velocity dispersion of the S15b stars.
+	\item the large velocity dispersion of the S15b stars.
 \end{enumerate}
 
 In Section~\ref{sec:method} we describe the methods used in this work: in Section~\ref{sec:potential} we describe the models we use for the gravitational potential of the Galaxy, in Section~\ref{sec:mocks} we explain the simple method we use to generate mock streams, and in Section~\ref{sec:chaos-indicator} we briefly describe the methods we use for detecting and characterizing chaotic orbits. In Section~\ref{sec:results1} we discuss the differences in the orbit structure between a static, axisymmetric potential model and a model with a time-dependent bar potential, and in Section~\ref{sec:results2} we use mock streams to argue that [chaotic stream-fanning is a plausible explanation for the observational peculiarities of the Ophiuchus stream.] We conclude in Section~\ref{sec:conclusions}.
@@ -214,11 +214,12 @@ We keep the potential, $\Phi$, fixed. In total, this model has 10 parameters (5 
 
 \subsubsection{Sampling from the posterior distributions}
 
-The full expression for the posterior probability, $p(\bs{s}, \bs{w}_0, t_b, t_f \given \{\bs{x}_i\}, \{\bs{\sigma}_i\}, \Phi)$, is the joint likelihood (Equation~\ref{eq:likelihood}) multiplied by all priors described above (Equations~\ref{eq:prior1}--\ref{eq:prior2}). We use an ensemble Markov Chain Monte Carlo (MCMC) algorithm \citep{goodman10} implemented in \python\ (\package{emcee}) to draw samples from this posterior distribution \citep{foremanmackey13}. The algorithm uses an ensemble of individual ``walkers'' to adapt to the geometry of the parameter-space being explored. In all cases, we use 80 walkers.
+The full expression for the posterior probability, $p(\bs{s}, \bs{w}_0, t_b, t_f \given \{\bs{x}_i\}, \{\bs{\sigma}_i\}, \Phi)$, is the joint likelihood (Equation~\ref{eq:likelihood}) multiplied by all priors described above (Equations~\ref{eq:prior1}--\ref{eq:prior2}). We use an ensemble Markov Chain Monte Carlo (MCMC) algorithm \citep{goodman10} implemented in \python\ (\package{emcee}) to generate samples from this posterior distribution \citep{foremanmackey13}. The algorithm uses an ensemble of individual ``walkers'' to adapt to the geometry of the parameter-space being explored. In all cases, we use 80 walkers (8 times the number of parameters).
 
-To initialize these walkers, we first run an optimization routine to maximize the likelihood. In detail, we use the Powell algorithm implemented in \package{Scipy} \citep{powell64, scipy} to minimize the negative, log-likelihood. To generate initial conditions for the walkers, we sample from Gaussian distributions centered on the maximum likelihood values. For the coordinates, we set the dispersions of these Gaussians to 1/1000 of the median uncertainties of the stars. For the nuisance parameters, we set the dispersions to 1/1000 of their maximum likelihood values. 
+To initialize these walkers, we first run an optimization routine to maximize the likelihood: We use the Powell algorithm implemented in \package{Scipy} \citep{powell64, scipy} to minimize the negative, log-likelihood. To generate initial conditions for the walkers, we sample from Gaussian distributions centered on the maximum likelihood values. For the coordinates, we set the dispersions of these Gaussians to 1/1000 of the median uncertainties of the stars. For the nuisance parameters, we set the dispersions to 1/1000 of their maximum likelihood values. 
 
-For each potential, we run the MCMC walkers for a burn-in period of 128 steps and then re-initialize the walkers from their positions at the end of this run. This erases any relics of the initialization procedure outlined above. After burn-in, we run the walkers for an additional 256 steps.
+For each potential, we run the MCMC walkers for a burn-in period of 512 steps and then re-initialize the walkers from their positions at the end of this run. This erases any relics of the initialization procedure outlined above. After burn-in, we run the walkers for an additional 512 steps. For each parameter, we compute the autocorrelation times, $\tau$, of the Markov chains and thin the chains by taking every $2\tau$ sample. This reduces the number of samples, but ensures that our posterior samples are effectively independent. 
+
 %
 %\subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
 %
@@ -242,7 +243,9 @@ For each potential, we run the MCMC walkers for a burn-in period of 128 steps an
 
 \subsection{Generating mock streams}\label{sec:mocks}
 
-To generate mock stellar streams, we use the method presented in \citep{fardal14}: star particles are `released' from a progenitor system near the Lagrange points with some dispersion in position and velocity set by the mass and orbit of the progenitor (this is similar to the \streakline\ method of \citet{kuepper12} but with finite dispersions). To generate progenitor orbits, we draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members (Section~\ref{sec:orbit-fit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits.
+To generate mock stellar streams, we use the method presented in \citep{fardal14}: star particles are `released' from a progenitor system near the Lagrange points with some dispersion in position and velocity set by the mass and orbit of the progenitor. To generate progenitor orbits, we draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members (Section~\ref{sec:orbitfit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits.
+
+We make one modification to this method based on the idea that the Ophiuchus stream progenitor has been fully-disrupted. We add an additional parameter to the stream generation routine to specify the time of disruption, $\tau_d$. At this time, we set the offset of the Lagrange point to 0: In terms of the parametrization in \citep{fardal14}, we set $k_r = 0$ and $k_{vt}=0$ but preserve the dispersion in the release radius and velocity. Any star released after $\tau_d$ is released with a small dispersion around the progenitor orbit but no offset.
 
 \section{Results I: Orbit fits}\label{sec:results1}
 
@@ -282,6 +285,12 @@ The mean orbits in the barred potentials are all strongly chaotic. We have tried
 
 
 \section{Results 2: Stream models for the Ophiuchus stream}
+
+- increased positional dispersion may be just projection
+
+- if orbit is correct, at current time we're looking roughly onto the instantaneous orbital plane. if thats the case, the straightness of the stream is interesting because that means the thing must have totally disrupted (no sign of L pts.)
+
+- 
 
 \section{Discussion}\label{sec:discussion}
 
