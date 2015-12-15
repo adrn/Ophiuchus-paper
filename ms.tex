@@ -1,4 +1,4 @@
-% \documentclass{emulateapj}
+%\documentclass{emulateapj}
 \documentclass[letterpaper,12pt,preprint]{aastex}
 
 \input{../paper-helpers/preamble.tex}
@@ -16,6 +16,9 @@
 \usepackage{graphicx} 
 \usepackage{color}
 \newcommand{\todo}[1]{{\color{red} TODO: #1}}
+
+\newcommand{\lyapexp}{\lambda_{\rm max}}
+\newcommand{\lyapt}{t_\lambda}
 
 \begin{document}
 
@@ -163,6 +166,8 @@ In each of the potentials described above, we fit orbits to the measured kinemat
 
 \subsubsection{Likelihood}
 
+\todo{Move a lot of this to appendix?}
+
 We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: in observed coordinates, these are the on-sky positional dispersion, $s_{\phi_2}$, a distance (modulus) dispersion, $s_{\DM}$, and a radial velocity dispersion, $s_{v_r}$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data. For brevity in the equations below, we define $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ and $\bs{\theta} = (\bs{w}_0, \Phi, t_b, t_f)$.
 
 For a given set of initial conditions ($\bs{w}_0$), we compute a model orbit as follows: (1) transform the initial conditions to Galactocentric coordinates, where we take the position and velocity of the Sun to be 
@@ -189,9 +194,9 @@ the likelihoods are
 	p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) &= \norm(\mu_{b,i} \given \widetilde{\mu_{b}}(\phi_{1,i}), \sigma^2_{\mu_{b,i}})\\
 	p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}) &= \norm(v_{r,i} \given \widetilde{v_r}(\phi_{1,i}), s^2_{v_r} + \sigma^2_{v_r,i}).
 \end{align}
-We assume the data from each star is independent and identically distributed (i.i.d.) so that the full likelihood is the product over the likelihoods for each star:
+We assume the data from each star is independent and identically distributed (i.i.d.) so that the full likelihood is the product over the likelihoods for all $N$ stars:
 \begin{equation}
-	 p(\{\bs{x}_i\} \given \{\bs{\sigma}_i\}, \bs{s}, \bs{\theta}) = \prod_i p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}).\label{eq:likelihood}
+	 p(\{\bs{x}_i\} \given \{\bs{\sigma}_i\}, \bs{s}, \bs{\theta}) = \prod_i^N p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}).\label{eq:likelihood}
 \end{equation}
 
 \subsubsection{Priors}
@@ -243,17 +248,18 @@ For each potential, we run the MCMC walkers for a burn-in period of 512 steps an
 
 \subsection{Generating mock streams}\label{sec:mocks}
 
-To generate mock stellar streams, we use the method presented in \citep{fardal14}: star particles are `released' from a progenitor system near the Lagrange points with some dispersion in position and velocity set by the mass and orbit of the progenitor. To generate progenitor orbits, we draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members (Section~\ref{sec:orbitfit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits.
+To generate mock stellar streams, we use the method presented in \citep{fardal14}: star particles are `released' from a progenitor system near the Lagrange points with a dispersion in position and velocity that is set by the mass and orbit of the progenitor. We draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members and use these as the progenitor orbital parameters (Section~\ref{sec:orbitfit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. \todo{Slightly more detail here about Fardal's parametrization} The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits.
 
 We make one modification to this method based on the idea that the Ophiuchus stream progenitor has been fully-disrupted. We add an additional parameter to the stream generation routine to specify the time of disruption, $\tau_d$. At this time, we set the offset of the Lagrange point to 0: In terms of the parametrization in \citep{fardal14}, we set $k_r = 0$ and $k_{vt}=0$ but preserve the dispersion in the release radius and velocity. Any star released after $\tau_d$ is released with a small dispersion around the progenitor orbit but no offset.
 
 \section{Results I: Orbit fits and chaos}\label{sec:results1}
 
-Figure~\ref{fig:orbitfits} summarizes our results from fitting orbits to the BHB stream stars. Shown in each panel are the Ophiuchus stream star members (black points) and samples from the  posterior probability over orbital parameters (blue lines). We only show one of the barred potentials: The end-to-end integration time of the orbit over the observed extent of the stream is only $\approx$6 Myr, so the derived orbits are extremely similar in all potentials (the time-dependence of the bar potential is not significant over such short timescales). The orbital periods are typically $\approx$150--250 Myr. 
+Figure~\ref{fig:orbitfits} summarizes our results from fitting orbits to the BHB stream stars. Shown in each panel are the Ophiuchus stream star members (black points) and orbits integrated from samples from the posterior probability over orbital parameters (blue lines). We only show one of the barred potentials: The end-to-end integration time of the orbit over the observed extent of the stream is only $\approx$6 Myr, so the derived orbits are extremely similar in all potentials (the time-dependence of the bar potential is not significant over such short timescales). The orbital periods are typically $\approx$170--200 Myr with pericenters $r_p \approx 4~{\rm kpc}$ and apocenters $r_a \approx 12$--$15~{\rm kpc}$. Though the coordinate and velocity parameter values in observed coordinates are very similar between each potential model, the resulting orbits are quite different. For the posterior samples in each potential, we take the mean values of the coordinate and velocity parameters and convert to Galactocentric coordinates (e.g., Table~\ref{tbl:param-means}). Figure~\ref{fig:orbits-yz} shows projections of these ``mean'' orbits in each potential model.
 
-Though the orbital parameter values in observed coordinates are very similar between each potential model, the resulting orbits are quite different. Figure~\ref{fig:orbits-yz} shows projections of the ``mean'' orbits in each potential model; for the posterior samples in each potential, we take the mean values of the orbital parameters and convert to Galactocentric coordinates (e.g., Table~\ref{tbl:param-means}). For each orbit, we compute the maximum Lyapunov exponent (MLE, $\lambda$) to assess whether the orbit is chaotic.  Though not predictive for the timescale over which chaos is important for tidal debris, the MLE is still an appropriate indicator of chaos \citep{apw15-chaos}. Figure~\ref{fig:lyapunov} shows numerical estimates of the Lyapunov time ($t_\lambda = 1/\lambda$) for the mean orbits in each potential model: in the static potential the orbit appears regular (black, diagonal line), but in all barred potentials the MLE estimates converge to finite values in the range $\approx$2--8 orbital periods. \todo{Should I compute Lyapunov exponents for samples from the posterior, not just the mean orbit? What fraction of the orbits sampled from the posterior and what are distribution of Lyapunov times?}
+For the posterior samples in each potential, we also compute the maximum Lyapunov exponent (MLE, $\lyapexp$) and corresponding Lyapunov \emph{time} ($\lyapt = 1/\lyapexp$) to assess whether the orbit is chaotic. For strongly chaotic orbits, the Lyapunov time is still an appropriate indicator of chaos and of the timescale over which chaos is important for tidal debris \citep{apw15-chaos}. Figure~\ref{fig:lyapunov} shows numerical estimates of the Lyapunov time for the mean orbits in each potential model: In the static potential the orbit appears regular (black, diagonal line), but in all barred potentials the MLE estimates converge to finite values in the range $\approx$2--8 orbital periods. Figure~\ref{XX} shows distributions of Lyapunov times for orbits drawn from the posterior distributions from orbit fitting in each potential model. \todo{What else to say?} \todo{What fraction of the orbits sampled from the posterior are chaotic and what are distribution of Lyapunov times? }
+\todo{PLOT MEAN ORBIT VALUE AS VERTICAL LINE}
 
-The mean orbits in the barred potentials are all strongly chaotic. We have tried computing the frequency diffusion rate for these orbits but have found that, over two consecutive integration windows, the frequency recovery fails because the frequency spectrum changes dramatically over timescales of $\approx$10--20 orbital periods.
+The orbits in the barred potentials are all strongly chaotic. We have tried computing the frequency diffusion rate for these orbits but have found that, over consecutive integration windows, the frequency recovery fails or is unreliable because the frequency spectrum changes dramatically over timescales of $\approx$10--20 orbital periods. 
 
 \begin{table*}[ht]
 \footnotesize
@@ -283,22 +289,34 @@ The mean orbits in the barred potentials are all strongly chaotic. We have tried
 \end{center}
 \end{table*}
 
-
 \section{Results 2: Stream models for the Ophiuchus stream}
 
-- increased positional dispersion may be just projection
+We generate mock streams along each of the mean orbits from the orbit fitting procedure (defined above). We use the method outlined above (Section \ref{sec:mocks}) to generate the streams and set the free parameters as follows: (1) we evolve the progenitors for 6 Gyr along each orbit, (2) we release star particles every 0.5 Myr (uniformly in time) to densely sample the final density distribution, (3) we set the progenitor mass to $m=10^4~\msun$, and (4) we set the disruption time of the progenitor equal to the last time at which a pericenter and disk crossing coincide (in each case, this is at $t \approx -200~{\rm Myr}$). 
 
-- if orbit is correct, at current time we're looking roughly onto the instantaneous orbital plane. if thats the case, the straightness of the stream is interesting because that means the thing must have totally disrupted (no sign of L pts.)
+Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} show the final particle positions and line-of-sight velocities in heliocentric coordinates for these mock streams (grey points). Vertical, dashed lines show the approximate extent of the part of the stream visible in main-sequence stars (excluding the BHB stars from S15b). We have applied the same distance-modulus cut to the points in these figures as used to select the BHB stars identified as stream members by S15b (see Section~2 in S15b). There are a few interesting features to note: 
+\begin{enumerate}
+	\item Even in the static potential (Figure~\ref{fig:mockstream0}, leftmost column), there is an increased dispersion in sky position for the stream stars towards higher Galactic longitudes, $l$. This is a projection effect: The portion of the stream at larger $l$ is closer and almost pointing towards the Sun, as demonstrated in Figure~\ref{fig:mockstreamxyz}. Figure~\ref{fig:mockstreamxyz} shows $x$-$z$ projections of the star particles in Galactocentric Cartesian coordinates (grey) along with the position of the Sun (symbol at $(x,z)=(-8,0)~{\rm kpc}$) and the corners of the Heliocentric, sky-position plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1}.
+	\item The density of the mock stream in the static potential decreases slowly rather than abruptly as is observed. This is more clearly seen in terms of the \todo{linear density of the stream}, shown in Figure~\ref{fig:lineardensity}. .... \todo{Figure showing some brightness density vs longitude?}
+	\item For the barred potentials, the stream morphology is very sensitive to the properties of the bar (especially the pattern speed) and to the initial conditions of the orbit. In addition to generating mock streams on the mean orbits, we have run similar simulations for random draws from the posterior distributions over orbit fits. We have found that the morphology can vary significantly between different samples (because these are strongly chaotic orbits), but the overall characteristics remain similar: along more strongly chaotic orbits, the debris ``fans'' more and the apparent dense part of the model streams is shorter (see, for example, Figure~\ref{fig:mockstreamxyz}, panels bar2 vs. bar3).
+\end{enumerate}
 
-- only run on mean streams, show all -- discuss that morphology is very sensitive to the bar properties
+To generate each mock stream, the star particles are released uniformly in time. The stream star particles at present day---e.g. the ``model'' points---are then a sampling of the stream model (phase-space) density field given a uniform stripping time distribution. We can then ask, given the data---a noisy sampling of the true density field---what stripping time distribution would reproduce the observed density field (e.g., the positions and velocities of the BHB stars). This corresponds to computing a weight for each $k$ model star particle with phase-space position $\bs{z}_k$ and release time, $t_{s,k}$:
+\begin{align}
+	w_k = \frac{1}{N} \, \sum^N_i \, p(\bs{z}_k \given \bs{x}_i, \bs{\sigma}_i, \bs{s})
+\end{align}
+(see Section~\ref{sec:orbitfit} for variable definitions).
 
-- some of the models have large dispersion, some have etc...
+If we assume that the data are a noisy sampling of the true (phase-space) density field, 
 
-- with better data, perhaps we can constrain the bar?
+Each model point We do this by computing the \todo{what is it called?} for each model point, $k$:  \citep{hogg10}.
+
+As a more quantitative / alternative exploration of the density ....... we consider the mass-loss histories...
 
 \section{Discussion}\label{sec:discussion}
 
-The model streams presented here do not reproduce all observed features of the Ophiuchus stream. Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. If the cluster progenitor was on a regular orbit, it would have to have disrupted entirely within the last $\approx$300 Myr (Figure~\ref{TODO}) in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar), (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
+The model streams presented here do not reproduce all observed features of the Ophiuchus stream. Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. If the cluster progenitor was on a regular orbit, it would have to have disrupted entirely within the last $\approx$300 Myr in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar): (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
+
+- with better data, perhaps we can constrain the bar?
 
 [bar not well understood but maybe this stream can help distinguish models with more data -- cite discrepancy in measruements (antoja14, wang12, wang13)]
 
@@ -320,11 +338,13 @@ What is a successful model?
 - "It's stupid to make it more complicated" -- Kathryn Johnston
 - from painting particles, Length of stream --> dispersion
 
+\todo{Still to early to say for sure, but a plausible explanation...}
+
 \section{Conclusions}\label{sec:conclusions}
 
-We have found that, with a qualitative but observationally-motivated potential model for the Galactic bar, the orbits of the Ophiuchus stream stars are likely sensitive to the time-dependence and shape of the bar potential. For modeling the stream itself, it is therefore crucial to include this component of the Galactic potential. By fitting orbits to kinematic data for members of the stream in Milky Way-like potential models, we have found that orbits in the vicinity of the Ophiuchus stream are strongly chaotic for a range of bar parameters (pattern speeds and present-day angles). Using mock stellar stream models generated assuming a globular cluster-mass progenitor object, we have shown that the apparent shortness of the stream and the existence of nearby stars with very high velocity dispersion are plausibly explained by chaotic density evolution of the stars stripped from the progenitor object. 
+We have shown that, with a qualitative but observationally-motivated potential model for the Galactic bar, the orbits of the Ophiuchus stream stars are likely sensitive to the time-dependence and shape of the bar potential. For modeling the stream density itself, it is therefore crucial to include this component of the Galactic potential. By fitting orbits to kinematic data for members of the stream in Milky Way-like potential models, we have found that orbits in the vicinity of the Ophiuchus stream are strongly chaotic for a range of bar parameters (pattern speeds and present-day angles). Using mock stellar stream models generated assuming a globular cluster-mass progenitor object, we have shown that the apparent shortness of the stream and the existence of nearby stars with very high velocity dispersion are plausibly explained by chaotic density evolution of the stars stripped from the progenitor object. 
 
-This is the first time chaos has been used to explain the morphology of a stellar stream and the first observational evidence for the importance of chaos in the Galactic halo. It also highlights the importance of including the Galactic bar in dynamical modeling of the Milky Way's inner halo and has important implications for future modeling of streams near in this region. With more Ophiuchus stream members, density and velocity information over a larger region near the stream, and better models for the internal structure of the Galactic bar, careful modeling of this stream could lead to tight constraints on the time-dependent properties of the bar.
+This is the first time chaos has been used to explain the morphology of a stellar stream and the first observational evidence for the importance of chaos in the Galactic halo. It also highlights the importance of including the Galactic bar in dynamical modeling of the Milky Way's inner halo and has important implications for future modeling of streams near in this region. With more Ophiuchus stream members, density and velocity information over a larger region near the stream, and better models for the internal structure of the Galactic bar, careful modeling of this stream could lead to tight constraints on the structure and evolution of the bar.
 
 \acknowledgements
 APW is supported by a National Science Foundation Graduate Research Fellowship under Grant No.\ 11-44155.
@@ -431,10 +451,48 @@ but the precise transformation and coordinate frame is implemented in \python\ u
 \begin{figure}[p]
 \begin{center}
 \includegraphics[width=\textwidth]{figures/lyapunov}
-\caption{ Estimates of the Lyapunov time, $t_\lambda=1/\lambda$, for the mean orbits in each potential model (Section~\ref{sec:results1}). All time units are given in units of orbital periods. The orbits are integrated from the mean values of orbital parameters from orbit fitting (Section~\ref{sec:orbitfit}). In the static, axisymmetric potential model, an orbit fit to the Ophiuchus stream is regular. In all barred potential models (bar1--9), the mean orbit is chaotic with a Lyapunov time that is less than 10 orbital periods. }
+\caption{ Estimates of the Lyapunov time, $\lyapt=1/\lyapexp$, for the mean orbits in each potential model (Section~\ref{sec:results1}). The orbits are integrated from the mean values of orbital parameters from orbit fitting (Section~\ref{sec:orbitfit}). In the static, axisymmetric potential model, an orbit fit to the Ophiuchus stream is regular (e.g., the Lyapunov time keeps increasing). In all barred potential models (bar1--9), the mean orbit is chaotic with a Lyapunov time between 0.5--1 Gyr.}
 \label{fig:lyapunov}
 \end{center}
 \end{figure}
 
+% ---------------------------------------------------------------------------------
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/lyapunov-hist}
+\caption{ Histograms of estimates of the Lyapunov time, $\lyapt=1/\lyapexp$, for posterior samples from the orbit fitting procedure (Section~\ref{sec:orbitfit}). Vertical lines show the Lyapunov time value of the mean orbit in that potential model. Orbits are typically more chaotic (have shorter Lyapunov times) for higher pattern speeds. There is little dependence on bar angle.}
+\label{fig:lyapunov-hist}
+\end{center}
+\end{figure}
+
+% ---------------------------------------------------------------------------------
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/mockstream0}
+\caption{ Sky position, distance, and line-of-sight velocity in Heliocentric, Galactic coordinates for star particles (grey points) from mock streams generated on the mean orbits in each potential. Vertical, dashed lines show the approximate extent of the densest part of the stream visible in main-sequence stars \citep[the segment originally detected in ][]{bernard14}.}
+\label{fig:mockstream0}
+\end{center}
+\end{figure}
+
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/mockstream1}
+\caption{ Same as Figure~\ref{fig:mockstream0} for the other five barred potentials. }
+\label{fig:mockstream1}
+\end{center}
+\end{figure}
+
+% ---------------------------------------------------------------------------------
+\clearpage
+\begin{figure}[p]
+\begin{center}
+\includegraphics[width=\textwidth]{figures/mockstream-xyz}
+\caption{ Star particles (grey points) from mock streams generated on the mean orbits in each potential model shown in projections of Galatocentric, Cartesian coordinates. The position of the Sun is shown as the symbol at $(x,z)=(-8,0)~{\rm kpc}$. The corners of the sky position and distance plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} are shown transformed to these coordinates as dark markers near $(x,z)=(-4,3)~{\rm kpc}$, $(x,z)=(0,4)~{\rm kpc}$. This demonstrates that the stream is nearly aligned our viewing angle. }
+\label{fig:mockstreamxyz}
+\end{center}
+\end{figure}
 
 \end{document}
