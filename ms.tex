@@ -162,66 +162,9 @@ For comparison, we also define a time-independent potential model with a purely 
 \end{center}
 \end{table*}
 
-\subsection{Fitting orbits to the Ophiuchus stream}\label{sec:orbitfit}
+\subsection{Fitting orbits to the Ophiuchus stream}
 
-In each of the potentials described above, we fit orbits to the measured kinematics of BHB stars that are high-likelihood members of the Ophiuchus stream \citep{sesar15a, sesar15b}. Our goal is to infer the posterior probability distributions over orbital initial conditions, $\bs{w}_0=(l, b, \DM, \mu_l, \mu_b, v_r)_0$, given a potential, $\Phi$, and kinematic data for each $i$ stream star, $\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$. In this notation, $(l, b)$ are Galactic coordinates, $\DM$ is the distance modulus, $(\mu_l, \mu_b)$ are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the stream and centered on the median sky position of the BHB stars in the densest part of the stream \cite[all BHB stars except the `fanned' stars: cand15, cand26, cand49, cand54 from][]{sesar15b}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). This methodology is similar to that used in \cite{koposov10} and \cite{sesar15a}.
-
-\subsubsection{Likelihood}
-
-\todo{Move a lot of this to appendix?}
-
-We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: in observed coordinates, these are the on-sky positional dispersion, $s_{\phi_2}$, a distance (modulus) dispersion, $s_{\DM}$, and a radial velocity dispersion, $s_{v_r}$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data. For brevity in the equations below, we define $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ and $\bs{\theta} = (\bs{w}_0, \Phi, t_b, t_f)$.
-
-For a given set of initial conditions ($\bs{w}_0$), we compute a model orbit as follows: (1) transform the initial conditions to Galactocentric coordinates, where we take the position and velocity of the Sun to be 
-\begin{align}
-	(x,y,z)_\odot &= (-8,0,0)~{\rm kpc}\\
-	(v_x,v_y,v_z)_\odot &= (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}
-\end{align}
-\citep{8kpc 	ref??, schonrich10, bovy12}, (2) integrate the orbit forward and backward by $t_f$ and $t_b$, respectively, in the potential $\Phi$, (3) transform all orbit points (time-steps) back to observed coordinates, and (4) define interpolating functions for each coordinate as a function of stream longitude, $\phi_1$, using cubic splines---e.g., functions $\widetilde{\phi}_{2}(\phi_1)$, $\widetilde{\DM}(\phi_1)$, $\widetilde{\mu_l}(\phi_1)$, $\widetilde{\mu_b}(\phi_1)$, $\widetilde{v_r}(\phi_1)$. These functions let us compute the predicted values of each of these coordinates at the longitudes of each observed star, $\phi_{1,i}$.
-
-We assume that each observed kinematic component is independent so that the likelihood of the data for a given star, $\bs{x}_i$, with uncertainties, $\bs{\sigma}_i$, is given by the product over the likelihoods for each dimension of the data:
-\begin{multline}
-	p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}) = p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) \, p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta})\\ 
-	\times p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) \, p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) \, p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}).
-\end{multline}
-The uncertainties in these observed coordinate components are assumed to be normally distributed away from the model values: using the notation
-\begin{align}
-	\norm(x \given \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi \sigma^2}} \, \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
-\end{align}
-the likelihoods are
-\begin{align}	
-	p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) &= \norm(\phi_{2,i} \given \widetilde{\phi}_{2}(\phi_{1,i}), s^2_{\phi_2})\\
-	p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta}) &= \norm(\DM_i \given \widetilde{\DM}(\phi_{1,i}), s^2_{\DM} + \sigma^2_{\DM,i})\\
-	p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) &= \norm(\mu_{l,i} \given \widetilde{\mu_{l}}(\phi_{1,i}), \sigma^2_{\mu_{l,i}})\\
-	p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) &= \norm(\mu_{b,i} \given \widetilde{\mu_{b}}(\phi_{1,i}), \sigma^2_{\mu_{b,i}})\\
-	p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}) &= \norm(v_{r,i} \given \widetilde{v_r}(\phi_{1,i}), s^2_{v_r} + \sigma^2_{v_r,i}).
-\end{align}
-We assume the data from each star is independent and identically distributed (i.i.d.) so that the full likelihood is the product over the likelihoods for all $N$ stars:
-\begin{equation}
-	 p(\{\bs{x}_i\} \given \{\bs{\sigma}_i\}, \bs{s}, \bs{\theta}) = \prod_i^N p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}).\label{eq:likelihood}
-\end{equation}
-
-\subsubsection{Priors}
-
-For the intrinsic dispersion parameters, we use logarithmic (scale-invariant) priors such that $p(s) \propto s^{-1}$. For the integration time parameters, we use uniform priors, $\mathcal{U}(a,b)$ (over the range $a$--$b$),
-\begin{align}
-	p(t_f) &= \mathcal{U}(1,100)~{\rm Myr}\label{eq:prior1}\\
-	p(t_b) &= \mathcal{U}(-100,-1)~{\rm Myr}.
-\end{align}
-Note that present-day is $t=0$. For computational efficiency, we place strong priors on the minimum and maximum longitudes of the model points, $(\phi_{1,{\rm min}},\phi_{1,{\rm max}})$ so that the model orbit does not integrate for longer than necessary. In particular, we set
-\begin{align}
-	p(\phi_{1,{\rm min}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm min}} \given \min(\phi_{1,i}), s^2_{\phi_2})\\
-	p(\phi_{1,{\rm max}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm max}} \given \max(\phi_{1,i}), s^2_{\phi_2}).
-\end{align}
-For the orbital initial condition components, we use uniform priors in each cartesian position component over the range $(-200,200)~{\rm kpc}$. For velocity, we use a Gaussian prior on the magnitude of the total velocity, $v$, with a dispersion of $150~\kms$,
-\begin{equation}
-	\norm(v \given 0, (150~\kms)^2) \label{eq:prior2}
-\end{equation}
-We keep the potential, $\Phi$, fixed. In total, this model has 10 parameters (5 phase-space coordinates, 5 nuisance parameters).
-
-\subsubsection{Sampling from the posterior distributions}
-
-The full expression for the posterior probability, $p(\bs{s}, \bs{w}_0, t_b, t_f \given \{\bs{x}_i\}, \{\bs{\sigma}_i\}, \Phi)$, is the joint likelihood (Equation~\ref{eq:likelihood}) multiplied by all priors described above (Equations~\ref{eq:prior1}--\ref{eq:prior2}). We use an ensemble Markov Chain Monte Carlo (MCMC) algorithm \citep{goodman10} implemented in \python\ (\package{emcee}) to generate samples from this posterior distribution \citep{foremanmackey13}. The algorithm uses an ensemble of individual ``walkers'' to adapt to the geometry of the parameter-space being explored. In all cases, we use 80 walkers (8 times the number of parameters).
+In each of the potentials described above, we fit orbits to the measured kinematics of BHB stars that are high-likelihood members of the Ophiuchus stream \citep{sesar15a, sesar15b}. The details of this procedure and a definition of the likelihood function we use are presented in Appendix~\ref{sec:orbitfit}. We use an ensemble Markov Chain Monte Carlo (MCMC) algorithm \citep{goodman10} implemented in \python\ (\package{emcee}) to generate samples from the posterior distribution over the parameters in our orbit-fitting model \citep{foremanmackey13}. The algorithm uses an ensemble of individual ``walkers'' to adapt to the geometry of the parameter-space being explored. In all cases, we use 80 walkers (8 times the number of parameters).
 
 To initialize these walkers, we first run an optimization routine to maximize the likelihood: We use the Powell algorithm implemented in \package{Scipy} \citep{powell64, scipy} to minimize the negative, log-likelihood. To generate initial conditions for the walkers, we sample from Gaussian distributions centered on the maximum likelihood values. For the coordinates, we set the dispersions of these Gaussians to 1/1000 of the median uncertainties of the stars. For the nuisance parameters, we set the dispersions to 1/1000 of their maximum likelihood values. 
 
@@ -292,59 +235,73 @@ The orbits sampled from the orbit-fit posteriors in the barred potentials are al
 
 \section{Results 2: Stream models for the Ophiuchus stream}
 
-We generate mock streams along each of the mean orbits from the orbit fitting procedure (defined above). We use the method outlined above (Section \ref{sec:mocks}) to generate the streams and set the free parameters as follows: (1) we evolve the progenitors for 6 Gyr along each orbit, (2) we release star particles every 0.5 Myr (uniformly in time) to densely sample the final density distribution, (3) we set the progenitor mass to $m=10^4~\msun$, and (4) we set the disruption time of the progenitor equal to the last time at which a pericenter and disk crossing coincide (in each case, this is at $t \approx -200~{\rm Myr}$). 
+We randomly sample 256 orbits from the orbital parameter posterior distributions and generate mock streams along each orbit. We use the method outlined above (Section \ref{sec:mocks}) to generate the streams and set the free parameters as follows: (1) we evolve the progenitors for 6 Gyr along each orbit, (2) we release star particles every 0.5 Myr (uniformly in time) to densely sample the final density distribution, (3) we set the progenitor mass to $m=10^4~\msun$, and (4) we set the disruption time of the progenitor equal to the last time at which a pericenter and disk crossing coincide (in each case, this is at $t \approx -200~{\rm Myr}$). After the disruption time, we continue releasing the star particles uniformly in time rather than releasing a ``burst'' of particles at once. We therefore expect that the morphology and value of the density of the most recently disrupted debris will not exactly match the data.
 
-Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} show the final particle positions and line-of-sight velocities in heliocentric coordinates for these mock streams (grey points). Vertical, dashed lines show the approximate extent of the part of the stream visible in main-sequence stars (excluding the BHB stars from S15b). We have applied the same distance-modulus cut to the points in these figures as used to select the BHB stars identified as stream members by S15b (see Section~2 in S15b). There are a few interesting features to note: 
+For each generated mock stream, we compute the likelihood of the data given the star particles by estimating the phase-space model density using a kernel density estimate with a Gaussian kernel \citep[see, e.g.,][]{bonaca14}. For each $i$ data point and each $k$ model point with coordinates $\bs{y}_k$, we compute the likelihood by converting the model point position and velocity into Heliocentric coordinates and evaluate
+\begin{align}
+	p(\bs{x}_i \given \bs{y}_k, \bs{\sigma}_i, \bs{h}) = \mathcal{N}(\bs{x}_i \given \bs{y}_k, \bs{\sigma}_i^2 +\bs{h}^2)
+\end{align}
+where $\mathcal{N}(x\given \mu,\sigma^2)$ is the normal distribution with mean $\mu$ and variance $\sigma^2$ and $\bs{h}$ represents the diagonal of the bandwidth matrix, $\bs{\rm H}$, used for the density estimate, $\bs{h} = {\rm diag}(\bs{\rm H})$. We fix the bandwidth parameters as follows
+\begin{equation}
+	\bs{h} = \left(
+	\begin{array}{c}
+	0.2~{\rm deg}\\
+	0.2~{\rm deg}\\
+	0.2~{\rm kpc}\\
+	0.2~{\rm mas}~{\rm yr}^{-1}\\
+	0.2~{\rm mas}~{\rm yr}^{-1}\\
+	0.2~\kms
+	\end{array}
+	\right)
+\end{equation} %(max$\mathcal{L}$)
+for sky position in Galactic coordinates ($l$, $b$), distance, proper motions ($\mu_l$, $\mu_b$), and radial velocity. The full likelihood for all $N$ data points given $K$ model points is 
+\begin{equation}
+	\mathcal{L} = \prod_i^N \frac{1}{K} \sum_k^K p(\bs{x}_i \given \bs{y}_k, \bs{\sigma}_i, \bs{h}).
+\end{equation}
+
+Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} show the final particle positions and line-of-sight velocities in heliocentric coordinates for the maximum likelihood mock streams (grey points) in each potential. Vertical, dashed lines show the approximate extent of the part of the stream visible in main-sequence stars (excluding the BHB stars from S15b). There are a few interesting features to note from these panels: 
 \begin{enumerate}
-	\item Even in the static potential (Figure~\ref{fig:mockstream0}, leftmost column), there is an increased dispersion in sky position for the stream stars towards higher Galactic longitudes, $l$. This is a projection effect: The portion of the stream at larger $l$ is closer and almost pointing towards the Sun, as demonstrated in Figure~\ref{fig:mockstreamxyz}. Figure~\ref{fig:mockstreamxyz} shows $x$-$z$ projections of the star particles in Galactocentric Cartesian coordinates (grey) along with the position of the Sun (symbol at $(x,z)=(-8,0)~{\rm kpc}$) and the corners of the Heliocentric, sky-position plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1}.
-	\item The density of the mock stream in the static potential decreases slowly rather than abruptly as is observed. This is more clearly seen in terms of the \todo{linear density of the stream??}, shown in Figure~\ref{fig:lineardensity}. .... \todo{Figure showing some brightness density vs longitude? Waiting on Branimir!}
+	\item Even in the static potential (Figure~\ref{fig:mockstream0}, leftmost column), there is a slight decrease in the density for the model stream towards higher Galactic longitudes, $l$. This is a projection effect: The portion of the stream at larger $l$ is closer points almost directly towards the Sun so that the debris covers a larger area. This is more clearly seen in Figure~\ref{fig:mockstreamxyz}, which shows $x$-$z$ projections of the star particles in Galactocentric Cartesian coordinates (grey) along with the position of the Sun (symbol at $(x,z)=(-8,0)~{\rm kpc}$) and the ``window'' of the Heliocentric, sky-position plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} (shown as blue lines).
+	\item The density of the mock stream in the static potential decreases slowly rather than abruptly as is observed. This is more clearly seen in terms of the \todo{linear density along the stream, shown in Figure~\ref{fig:lineardensity}}. .... \todo{Waiting on Branimir!}
 	\item For the barred potentials, the stream morphology is very sensitive to the properties of the bar (especially the pattern speed) and to the initial conditions of the orbit. In addition to generating mock streams on the mean orbits, we have run similar simulations for random draws from the posterior distributions over orbit fits. We have found that the morphology can vary significantly between different samples (because these are strongly chaotic orbits), but the overall characteristics remain similar: along more strongly chaotic orbits, the debris ``fans'' more and the apparent dense part of the model streams is shorter (see, for example, Figure~\ref{fig:mockstreamxyz}, panels bar2 vs. bar3).
 \end{enumerate}
 
-To generate each mock stream, the star particles are released uniformly in time. The stream star particles at present day---e.g. the ``model'' points---are therefore a sampling of the stream model (phase-space) density field given a uniform stripping time distribution. We can then ask, given the data---a noisy sampling of the true density field---what stripping time distribution would reproduce the observed density field (e.g., the positions and velocities of the BHB stars). This corresponds to computing a weight for each $k$ model star particle with phase-space position $\bs{z}_k$ and release time, $t_{s,k}$:
-\begin{align}
-	w_k = \frac{1}{N} \, \sum^N_i \, p(\bs{z}_k \given \bs{x}_i, \bs{\sigma}_i, \bs{s})
-\end{align}
-(see Section~\ref{sec:orbitfit} for variable definitions). For the static potential all of the BHB stars associated with the stream must have been released very recently, so we expect that the inferred stripping time distribution for the mock stream in the static potential should be heavily skewed towards recent times. Indeed, the top left panel in Figure~\ref{fig:massloss} shows the stripping time distribution for the mock stream in the static potential: all stars would have to have been disrupted in the last $\lesssim 600~{\rm Myr}$ in order to produce the short segment of the stream observed. This is consistent with the findings and $N$-body simulations in S15a. 
-
-\todo{This is wrong -- maybe axe? maybe bar3 is showing resonant stuff that the fardal, sanders paper talks about...}
-For the mock streams in the barred potentials, the stripping time distributions are generally multi-modal and in some cases extend several Gigayears into the past, as we would expect for a disrupting globular cluster. In particular, the panel labeled bar3 shows a case in which there could be many ``mass-loss'' events over the history of the cluster's orbit, but the final debris distribution would still remain short. This is because the star particles released earlier will diffuse away and therefore won't get penalized by the weighting scheme described above.
+%We have applied the same distance-modulus cut to the points in these figures as used to select the BHB stars identified as stream members by S15b (see Section~2 in S15b).
 
 \section{Discussion}\label{sec:discussion}
 
 The model streams presented here do not reproduce all observed features of the Ophiuchus stream. Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. If the cluster progenitor was on a regular orbit, it would have to have disrupted entirely within the last $\approx$300--600 Myr in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar): (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
 %[Gaia, Don't do distance cut that Brani did, chemistry]
 
-It is still too early to say for sure that chaotic stream-fanning is occurring for the Ophiuchus stream; deeper follow-up imaging and spectroscopy over a larger area region around the stream will be needed to test the predictions of this work. With more information about the density distribution of stars in the stream and better proper motion measurements we would be able to (1) help distinguish models for the Milky Way bar independent from current methods and (2) begin to model the survivability of globular clusters orbiting in the central Milky Way. 
+It is still too early to say for sure that chaotic stream-fanning is occurring for the Ophiuchus stream; deeper follow-up imaging and spectroscopy over a larger area region around the stream will be needed to test the predictions of this work. With more information about the density distribution of stars in the stream and better proper motion measurements we would be able to (1) help distinguish models for the Milky Way bar independent from current methods and (2) begin to model the survivability of globular clusters orbiting in the central Milky Way \citep[e.g.,][]{gnedin97}. 
 
-\todo{Where to put this?}
-
-A typical inner MW globular cluster with a mass $m_{\rm cl} \approx 10^4~\msun$ has a half-mass radius $r_h \approx 2~{\rm pc}$. We can ask, given an assumed mass density profile for the inner galaxy, what Galactocentric pericentric radius the Ophiuchus progenitor would have to reach such that the tidal radius of the cluster is equal to the half-mass radius.
-
-Let's assume the density profile of the inner $\approx 1~{\rm kpc}$ of the MW is a Jaffe spheroid so that
-\begin{align}
-	\rho(r) &= \frac{\rho_0}{(r/a)^2 \, (1 + r/a)^2}\\
-	M(<r) &= 4\pi \, \rho_0 \, a^3 \, \frac{r/a}{1 + r/a}
-\end{align}
-with scale radius $a \approx 0.5~{\rm kpc}$ and mass within the scale radius $M(<a) \approx 10^{10}~\msun$ ($\rho_0 \approx \frac{10^{10}~\msun}{2\pi a^3} \approx 10^{10}~\msun~{\rm kpc}^{-3}$). The tidal radius is approximately
-\begin{align}
-	r_{\rm tide} \approx \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r
-\end{align}
-so that 
-
-then
-\begin{align}
-	2~{\rm pc} &= \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r\\
-\end{align}
-
-
-if we set
-\begin{align}
-	r_{\rm tide} = r_h = 2~{\rm pc} 
-\end{align}
-
-
-\todo{Predictions and tests of this model!}
+%\todo{Where to put this?}
+%
+%also, cite gnedin97
+%
+%A typical inner MW globular cluster with a mass $m_{\rm cl} \approx 10^4~\msun$ has a half-mass radius $r_h \approx 2~{\rm pc}$. We can ask, given an assumed mass density profile for the inner galaxy, what Galactocentric pericentric radius the Ophiuchus progenitor would have to reach such that the tidal radius of the cluster is equal to the half-mass radius.
+%
+%Let's assume the density profile of the inner $\approx 1~{\rm kpc}$ of the MW is a Jaffe spheroid so that
+%\begin{align}
+%	\rho(r) &= \frac{\rho_0}{(r/a)^2 \, (1 + r/a)^2}\\
+%	M(<r) &= 4\pi \, \rho_0 \, a^3 \, \frac{r/a}{1 + r/a}
+%\end{align}
+%with scale radius $a \approx 0.5~{\rm kpc}$ and mass within the scale radius $M(<a) \approx 10^{10}~\msun$ ($\rho_0 \approx \frac{10^{10}~\msun}{2\pi a^3} \approx 10^{10}~\msun~{\rm kpc}^{-3}$). The tidal radius is approximately
+%\begin{align}
+%	r_{\rm tide} \approx \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r
+%\end{align}
+%so that 
+%
+%then
+%\begin{align}
+%	2~{\rm pc} &= \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r\\
+%\end{align}
+%
+%
+%if we set
+%\begin{align}
+%	r_{\rm tide} = r_h = 2~{\rm pc} 
+%\end{align}
 
 \subsection{Future work: Modeling the Galactic bar}
 
@@ -352,9 +309,11 @@ The current kinematic data for the Ophiuchus BHB stars suggests that the stream 
 
 \subsection{Future work: The orbits and survivability of inner Milky Way globular clusters}
 
-If the Ophiuchus stream formed from a globular cluster on a chaotic orbit and we happen to be witnessing its final demise, what does this imply about the population of clusters that have already been fully disrupted? For a given model for the Galactic bar, we can study the orbit structure in the inner Milky Way and, in particular, study the fraction of strongly chaotic orbits that would lead to chaotic fanning or fast dispersal of tidal debris \citep{recent work by zotos or those greek peeps}. The existence of strongly chaotic orbits in this region would limit the expected number of cold stellar streams in the inner Galaxy. Comparing the observed numbers with expectations ... \todo{what to say exactly -- KVJ?}
+If the Ophiuchus stream formed from a globular cluster on a chaotic orbit and we happen to be witnessing its final demise, what does this imply about the population of clusters that have already been fully disrupted? For a given model for the Galactic bar, we can study the orbit structure in the inner Milky Way and, in particular, study the fraction of strongly chaotic orbits that would lead to chaotic fanning or fast dispersal of tidal debris \citep{recent work by zotos or those greek peeps}. The existence of strongly chaotic orbits in this region would limit the expected number of cold stellar streams in the inner Galaxy. Comparing the observed numbers with expectations ... \todo{KVJ add words?}
 
 \section{Conclusions}\label{sec:conclusions}
+
+\todo{Predictions and tests of this model!}
 
 We have shown that, with a qualitative but observationally-motivated potential model for the Galactic bar, the orbits of the Ophiuchus stream stars are likely sensitive to the time-dependence and shape of the bar potential. For modeling the stream density itself, it is therefore crucial to include this component of the Galactic potential. By fitting orbits to kinematic data for members of the stream in Milky Way-like potential models, we have found that orbits in the vicinity of the Ophiuchus stream are strongly chaotic for a range of bar parameters (pattern speeds and present-day angles). Using mock stellar stream models generated assuming a globular cluster-mass progenitor object, we have shown that the apparent shortness of the stream and the existence of nearby stars with very high velocity dispersion are plausibly explained by chaotic density evolution of the stars stripped from the progenitor object. 
 
@@ -390,12 +349,69 @@ z \end{array} \right)_{\rm Gal}
 \end{equation*}
 but the precise transformation and coordinate frame is implemented in \python\ using the \package{Astropy} coordinates package.\footnote{See \url{http://adrian.pw/ophiuchus/coordinates} for more information}  This code is hosted on \project{GitHub}.\footnote{\url{https://github.com/adrn/ophiuchus}} 
 
+\section{Fitting orbits to stellar streams}\label{sec:orbitfit}
+
+Our goal is to infer the posterior probability distributions over orbital initial conditions, $\bs{w}_0=(l, b, \DM, \mu_l, \mu_b, v_r)_0$, given a potential, $\Phi$, and kinematic data for each $i$ stream star, $\bs{x}_i=(l, b, \DM, \mu_l, \mu_b, v_r)_i$. In this notation, $(l, b)$ are Galactic coordinates, $\DM$ is the distance modulus, $(\mu_l, \mu_b)$ are proper motions in the Galactic frame, and $v_r$ is the radial velocity. We assume that the sky coordinates for each star are known perfectly well (have zero uncertainty) and transform the data to a rotated, heliocentric coordinate system that is aligned with the stream and centered on the median sky position of the BHB stars in the densest part of the stream \cite[all BHB stars except the `fanned' stars: cand15, cand26, cand49, cand54 from][]{sesar15b}. We represent the longitude and latitude in these coordinates as $(\phi_1, \phi_2)$ and the rotation matrix to transform from Galactic to these coordinates is given in Appendix~\ref{sec:rotationmatrix}. We treat the stream longitude, $\phi_1$, as the perfectly-known, independent variable so that all other coordinates can be expressed as functions of this longitude (e.g., $\phi_2(\phi_1)$, ${\rm DM}(\phi_1)$, etc.). This methodology is similar to that used in \cite{koposov10} and \cite{sesar15a}.
+
+\subsection{Likelihood}
+
+We include three nuisance parameters in our likelihood to account for the internal dispersion of the stream: in observed coordinates, these are the on-sky positional dispersion, $s_{\phi_2}$, a distance (modulus) dispersion, $s_{\DM}$, and a radial velocity dispersion, $s_{v_r}$ (the proper motion uncertainties are sufficiently large that we can't resolve the velocity dispersion in these coordinates).\footnote{We assume that the dispersion in these coordinates is constant over the observed (short) section of the stream. This may be a bad assumption.} We add two additional nuisance parameters for controlling the amount of time to integrate forwards, $t_f$, and backwards, $t_b$, from the given initial conditions, which ultimately controls the length of the section of orbit that is compared to the stream star data. For brevity in the equations below, we define $\bs{s} = (s_{\phi_2}, s_{\DM}, s_{v_r})$ and $\bs{\theta} = (\bs{w}_0, \Phi, t_b, t_f)$.
+
+For a given set of initial conditions ($\bs{w}_0$), we compute a model orbit as follows: (1) transform the initial conditions to Galactocentric coordinates, where we take the position and velocity of the Sun to be 
+\begin{align}
+	(x,y,z)_\odot &= (-8,0,0)~{\rm kpc}\\
+	(v_x,v_y,v_z)_\odot &= (-11.1, 220+24, 7.25)~{\rm km}~{\rm s}^{-1}
+\end{align}
+\citep{8kpc 	ref??, schonrich10, bovy12}, (2) integrate the orbit forward and backward by $t_f$ and $t_b$, respectively, in the potential $\Phi$, (3) transform all orbit points (time-steps) back to observed coordinates, and (4) define interpolating functions for each coordinate as a function of stream longitude, $\phi_1$, using cubic splines---e.g., functions $\widetilde{\phi}_{2}(\phi_1)$, $\widetilde{\DM}(\phi_1)$, $\widetilde{\mu_l}(\phi_1)$, $\widetilde{\mu_b}(\phi_1)$, $\widetilde{v_r}(\phi_1)$. These functions let us compute the predicted values of each of these coordinates at the longitudes of each observed star, $\phi_{1,i}$.
+
+We assume that each observed kinematic component is independent so that the likelihood of the data for a given star, $\bs{x}_i$, with uncertainties, $\bs{\sigma}_i$, is given by the product over the likelihoods for each dimension of the data:
+\begin{multline}
+	p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}) = p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) \, p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta})\\ 
+	\times p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) \, p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) \, p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}).
+\end{multline}
+The uncertainties in these observed coordinate components are assumed to be normally distributed away from the model values: using the notation
+\begin{align}
+	\norm(x \given \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi \sigma^2}} \, \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\end{align}
+the likelihoods are
+\begin{align}	
+	p(\phi_{2,i} \given \phi_{1,i}, s_{\phi_2},\bs{\theta}) &= \norm(\phi_{2,i} \given \widetilde{\phi}_{2}(\phi_{1,i}), s^2_{\phi_2})\\
+	p(\DM_i \given \phi_{1,i}, \sigma_{\DM,i}, s_\DM, \bs{\theta}) &= \norm(\DM_i \given \widetilde{\DM}(\phi_{1,i}), s^2_{\DM} + \sigma^2_{\DM,i})\\
+	p(\mu_{l,i} \given \phi_{1,i}, \sigma_{\mu_{l},i}, \bs{\theta}) &= \norm(\mu_{l,i} \given \widetilde{\mu_{l}}(\phi_{1,i}), \sigma^2_{\mu_{l,i}})\\
+	p(\mu_{b,i} \given \phi_{1,i}, \sigma_{\mu_{b},i}, \bs{\theta}) &= \norm(\mu_{b,i} \given \widetilde{\mu_{b}}(\phi_{1,i}), \sigma^2_{\mu_{b,i}})\\
+	p(v_{r,i} \given \phi_{1,i}, \sigma_{v_r,i}, s_{v_r}, \bs{\theta}) &= \norm(v_{r,i} \given \widetilde{v_r}(\phi_{1,i}), s^2_{v_r} + \sigma^2_{v_r,i}).
+\end{align}
+We assume the data from each star is independent and identically distributed (i.i.d.) so that the full likelihood is the product over the likelihoods for all $N$ stars:
+\begin{equation}
+	 p(\{\bs{x}_i\} \given \{\bs{\sigma}_i\}, \bs{s}, \bs{\theta}) = \prod_i^N p(\bs{x}_i \given \bs{\sigma}_i, \bs{s}, \bs{\theta}).\label{eq:likelihood}
+\end{equation}
+
+\subsection{Priors}
+
+For the intrinsic dispersion parameters, we use logarithmic (scale-invariant) priors such that $p(s) \propto s^{-1}$. For the integration time parameters, we use uniform priors, $\mathcal{U}(a,b)$ (over the range $a$--$b$),
+\begin{align}
+	p(t_f) &= \mathcal{U}(1,100)~{\rm Myr}\label{eq:prior1}\\
+	p(t_b) &= \mathcal{U}(-100,-1)~{\rm Myr}.
+\end{align}
+Note that present-day is $t=0$. For computational efficiency, we place strong priors on the minimum and maximum longitudes of the model points, $(\phi_{1,{\rm min}},\phi_{1,{\rm max}})$ so that the model orbit does not integrate for longer than necessary. In particular, we set
+\begin{align}
+	p(\phi_{1,{\rm min}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm min}} \given \min(\phi_{1,i}), s^2_{\phi_2})\\
+	p(\phi_{1,{\rm max}} \given \bs{\theta}) &= \norm(\phi_{1,{\rm max}} \given \max(\phi_{1,i}), s^2_{\phi_2}).
+\end{align}
+For the orbital initial condition components, we use uniform priors in each cartesian position component over the range $(-200,200)~{\rm kpc}$. For velocity, we use a Gaussian prior on the magnitude of the total velocity, $v$, with a dispersion of $150~\kms$,
+\begin{equation}
+	\norm(v \given 0, (150~\kms)^2) \label{eq:prior2}
+\end{equation}
+We keep the potential, $\Phi$, fixed. In total, this model has 10 parameters (5 phase-space coordinates, 5 nuisance parameters).
+
+The full expression for the posterior probability, $p(\bs{s}, \bs{w}_0, t_b, t_f \given \{\bs{x}_i\}, \{\bs{\sigma}_i\}, \Phi)$, is the joint likelihood (Equation~\ref{eq:likelihood}) multiplied by all priors described above (Equations~\ref{eq:prior1}--\ref{eq:prior2}).
+
 % ---------------------------------------------------------------------------------
 \clearpage
 \begin{figure}[p]
 \begin{center}
 \includegraphics[width=\textwidth]{figures/potentials-four}
-\caption{{\it Left column:} Circular velocity curves along the Sun-Galactic center line for a representative barred MW potential model (top left) and for the static MW potential model (bottom left). Solid black line shows total (sum of all components), lines below show a decomposition by potential component. Vertical grey bar shows approximate position of the Sun, horizontal grey bar shows roughly the range in measured circular velocity of the Sun. {\it Right column:} Contours of constant surface density for a barred MW potential (top right) and the static MW potential model (bottom right). Four contours are drawn per decade in surface density between $10^7$ and $10^{12}~\msun~{\rm kpc}^{-3}$. Note the perturbation from the bar potential within Galactocentric radius $r \lesssim 4~{\rm kpc}$. The Sun's position is indicated by the `$\odot$' symbol. }
+\caption{{\it Left column:} Circular velocity curves along the Sun-Galactic center line for a representative barred MW potential model (top left) and for the static MW potential model (bottom left). Solid black line shows total (sum of all components), lines below show a decomposition by potential components. Vertical grey bar shows approximate position of the Sun, horizontal grey bar shows roughly the range in measured circular velocity of the Sun. {\it Right column:} Contours of constant surface density for a barred MW potential (top right) and the static MW potential model (bottom right). Four contours are drawn per decade in surface density between $10^7$ and $10^{12}~\msun~{\rm kpc}^{-3}$. Note the perturbation from the bar potential within Galactocentric radius $r \lesssim 4~{\rm kpc}$. The Sun's position is indicated by the `$\odot$' symbol. }
 \label{fig:potentials}
 \end{center}
 \end{figure}
@@ -503,7 +519,7 @@ but the precise transformation and coordinate frame is implemented in \python\ u
 \begin{figure}[p]
 \begin{center}
 \includegraphics[width=\textwidth]{figures/surface-density}
-\caption{ Surface density of mock star particles ... \todo{This is with the same distance cut as used for the BHB stars -- is that what we want to use?}}	
+\caption{ Surface density of mock stream star particles in each potential. Contours are spaced logarithmically from $10^{-2}$ to $10$ particles per sq. deg---that is, each color represents a factor of 10 difference in surface density. In the static potential (top left), the density remains high along the center of the stream, but for some of the barred potentials the density drops sharply because of chaotic stream-fanning.}
 \label{fig:surfacedensity}
 \end{center}
 \end{figure}
