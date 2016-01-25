@@ -173,27 +173,6 @@ To initialize these walkers, we first run an optimization routine to maximize th
 
 For each potential, we run the MCMC walkers for a burn-in period of 512 steps and then re-initialize the walkers from their positions at the end of this run. This erases any relics of the initialization procedure outlined above. After burn-in, we run the walkers for an additional 512 steps. For each parameter, we compute the autocorrelation times, $\tau$, of the Markov chains and thin the chains by taking every $2\tau$ sample. This reduces the number of samples, but ensures that our posterior samples are effectively independent. 
 
-%
-%\subsection{Detecting and characterizing chaos with frequency diffusion}\label{sec:chaos-indicator}
-%
-%Regular orbits are quasi-periodic: any phase-space component of the orbit can be decomposed in terms of a Fourier series, e.g.,
-%\begin{equation}
-%	x(t) = \sum^\infty_k \, a_{x,k}\, e^{i\, \omega_k \, t}.
-%\end{equation}
-%The amplitudes, $\bs{a}_k$ are constants which determine the strength of each mode, and the frequencies in each Fourier mode, $\omega_k$, are linear, integer combinations of the fundamental frequencies of the orbit, $\bs{\Omega}$---that is,
-%\begin{equation}
-%	\omega_k = \bs{n}_k \cdot \bs{\Omega}
-%\end{equation}
-%where $\bs{n}_k$ is a integer vector with dimensionality equal to the number of degrees of freedom of the gravitational potential \citep[e.g.,][]{binney82, binneytremaine}. The fundamental frequencies of a regular orbit are directly related to the orbital actions, a set of integrals of motion intricately related to the [...] of Hamiltonian and nonlinear dynamics \citep[e.g.,][]{??}. The fundamental frequencies can be approximated for numerically-integrated orbital time series by measuring the positions and amplitudes of spectral lines in the Fourier transform of the orbital components. A very accurate procedure for numerically computing the frequencies was developed by \citet{laskar93} and has been re-implemented in \python\ and released as open-source software \citep[\superfreq;][]{superfreq}. 
-%
-%Chaotic orbits have no actions and therefore no fundamental frequencies. The frequencies and actions drift erratically in time with rates that depend on the structure of resonances surrounding such orbits. The evolution of the frequencies changes the configuration-space appearance of finite sub-sections of chaotic orbits and greatly enhances the density evolution of ensembles of nearby chaotic orbits; this has a dramatic effect on the morphological evolution of tidal streams \citep[e.g.,][]{apw15-chaos}. Numerically-integrated trajectories can be identified as chaotic orbits by the detection of frequency diffusion \citep[e.g.,][]{laskar96, valluri98}. 
-%
-%The accuracy of the frequency-finding method (\superfreq) allows for detecting very small changes in the frequencies of even mildly chaotic orbits. Measuring the rate of frequency diffusion is therefore a powerful tool for detecting and characterizing dynamical chaos \citep[e.g.,][]{many}. From measuring the frequencies in many consecutive, overlapping time-windows along a numerically integrated orbit, we define the frequency diffusion rate, $DERP$, as
-%\begin{equation}
-%	yo
-%\end{equation}
-%where the index $k$ refers to the window number and $\tau$ is the shift in time between two consecutive windows. We note that this definition differs from previous, coarse approximations of the diffusion rate that simply differenced the frequencies computed in two consecutive time windows. We use this frequency diffusion rate to identify chaotic orbits integrated in the potential models described above.
-
 \subsection{Generating mock streams}\label{sec:mocks}
 
 To generate mock stellar streams, we use the method presented in \citet{fardal14}: Star particles are `released' from a progenitor system near the Lagrange points with a dispersion in position and velocity that is set by the mass and orbit of the progenitor. We draw samples from the posterior probability distributions over orbital parameters from fitting orbits to the stream star members and use these as the progenitor orbital parameters (Section~\ref{sec:orbitfit}). For a given progenitor orbit---the 6D position of the orbit today---we integrate the orbit backwards in time for a given integration period. From the endpoint of the backwards-integration (e.g., the past position), we begin integrating the orbit forward in time, but now at each time-step a star particle is released near each of the Lagrange points of the progenitor. The position of the Lagrange points and the scale of the dispersion in position and velocity are set by the progenitor mass, $m$. The star particles are drawn from Gaussians centered on the Lagrange points (in position) and the progenitor (in velocity) and the full parametrization of the release distribution is given in \cite{fardal14}. This method has been shown to reproduce the morphologies of $N$-body simulations of stellar streams, but requires far less computing time because it relies only on integrating test-particle orbits. 
@@ -246,9 +225,6 @@ For each potential model, we randomly sample 256 orbits from the orbital paramet
 \begin{center}
 	\begin{tabular}{cccccc}
 	\toprule
-%	name & $\phi_2$ [deg] & $d$ [kpc] & $\mu_l$ [mas yr$^{-1}$] & $\mu_b$ [mas yr$^{-1}$] & $v_r$ [km s$^{-1}$] & $s_{\phi_2}$ [deg] & $s_{d}$ [kpc] & $s_{v_r}$ [km s$^{-1}$]\\\midrule
-%static & $-0.03\pm0.05$ & $8.35\pm0.05$ & $-7.2\pm0.1$ & $0.9\pm0.1$ & $289.1\pm0.9$ & $0.20\pm0.04$ & $0.31\pm0.10$ & $2.9\pm0.8$\\
-%bar1--9 & $-0.03\pm0.05$ & $8.40\pm0.05$ & $-7.2\pm0.1$ & $0.9\pm0.1$ & $289.0\pm1.0$ & $0.21\pm0.05$ & $0.31\pm0.14$ & $3.2\pm0.9$\\
 	name & $\phi_2$ [deg] & $d$ [kpc] & $\mu_l$ [mas yr$^{-1}$] & $\mu_b$ [mas yr$^{-1}$] & $v_r$ [km s$^{-1}$]\\\midrule
 	static & $-0.03\pm0.05$ & $8.3\pm0.05$ & $-7.4\pm0.1$ & $0.9\pm0.1$ & $288.9\pm0.9$\\
 	bar1--9 & $-0.03\pm0.05$ & $8.35\pm0.05$ & $-7.4\pm0.1$ & $0.9\pm0.1$ & $289.0\pm1.0$\\
@@ -257,9 +233,6 @@ For each potential model, we randomly sample 256 orbits from the orbital paramet
 	
 	\begin{tabular}{ccc}
 	\toprule
-%	name & $\phi_2$ [deg] & $d$ [kpc] & $\mu_l$ [mas yr$^{-1}$] & $\mu_b$ [mas yr$^{-1}$] & $v_r$ [km s$^{-1}$] & $s_{\phi_2}$ [deg] & $s_{d}$ [kpc] & $s_{v_r}$ [km s$^{-1}$]\\\midrule
-%static & $-0.03\pm0.05$ & $8.35\pm0.05$ & $-7.2\pm0.1$ & $0.9\pm0.1$ & $289.1\pm0.9$ & $0.20\pm0.04$ & $0.31\pm0.10$ & $2.9\pm0.8$\\
-%bar1--9 & $-0.03\pm0.05$ & $8.40\pm0.05$ & $-7.2\pm0.1$ & $0.9\pm0.1$ & $289.0\pm1.0$ & $0.21\pm0.05$ & $0.31\pm0.14$ & $3.2\pm0.9$\\
 	$s_{\phi_2}$ [deg] & $s_{d}$ [kpc] & $s_{v_r}$ [km s$^{-1}$]\\\midrule
 	$0.20\pm0.04$ & $0.31\pm0.10$ & $2.9\pm0.8$\\
 	$0.21\pm0.05$ & $0.31\pm0.14$ & $3.2\pm0.9$\\
@@ -302,42 +275,11 @@ The density truncation of the mock streams in each potential model is more clear
 
 The viewing angle and stream geometry is more clearly demonstrated in Figure~\ref{fig:mockstreamxyz}, which shows $x$-$z$ projections of the star particles in Galactocentric Cartesian coordinates (grey) along with the position of the Sun (symbol at $(x,z)=(-8.3,0)~{\rm kpc}$) and the ``window'' of the heliocentric, sky-position plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} (shown as blue lines). 
 
-%We have applied the same distance-modulus cut to the points in these figures as used to select the BHB stars identified as stream members by S16 (see Section~2 in S16).
-
 \section{Discussion}\label{sec:discussion}
 
 The model streams presented here do not reproduce all observed features of the Ophiuchus stream (the details of the potential and the orbit predict vastly different phase-space morphologies for the fanned part). Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. If the cluster progenitor was on a regular orbit, it would have to have disrupted entirely within the last $\approx$300--600 Myr in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar): (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
-%[Gaia, Don't do distance cut that Brani did, chemistry]
 
 It is still too early to say for sure that chaotic stream-fanning is occurring for the Ophiuchus stream. Deeper follow-up imaging and spectroscopy over a larger area region around the stream will be needed to test the predictions of this work and compare with other possible scenarios. For example, recent work has shown that if the Ophichus stream progenitor orbit is in resonance with the bar, the debris can remain short for at least 1 Gyr \citep{hattori15}. In this model, there would be no nearby, high-dispersion debris, and the pattern speed of the bar would likely be related to the orbital frequencies of the progenitor orbit. However, it has not been demonstrated whether this proposed scheme can explain the shortness of the stream over timescales closer to the age of the stellar population ($\approx$10 Gyr). With more information about the density distribution of stars in the stream and better proper motion measurements we would be able to (1) help distinguish models for the Milky Way bar independent from current methods and (2) begin to model the survivability of globular clusters orbiting in the central Milky Way \citep[e.g.,][]{gnedin97}. 
-
-%\todo{Where to put this?}
-%
-%also, cite gnedin97
-%
-%A typical inner MW globular cluster with a mass $m_{\rm cl} \approx 10^4~\msun$ has a half-mass radius $r_h \approx 2~{\rm pc}$. We can ask, given an assumed mass density profile for the inner galaxy, what Galactocentric pericentric radius the Ophiuchus progenitor would have to reach such that the tidal radius of the cluster is equal to the half-mass radius.
-%
-%Let's assume the density profile of the inner $\approx 1~{\rm kpc}$ of the MW is a Jaffe spheroid so that
-%\begin{align}
-%	\rho(r) &= \frac{\rho_0}{(r/a)^2 \, (1 + r/a)^2}\\
-%	M(<r) &= 4\pi \, \rho_0 \, a^3 \, \frac{r/a}{1 + r/a}
-%\end{align}
-%with scale radius $a \approx 0.5~{\rm kpc}$ and mass within the scale radius $M(<a) \approx 10^{10}~\msun$ ($\rho_0 \approx \frac{10^{10}~\msun}{2\pi a^3} \approx 10^{10}~\msun~{\rm kpc}^{-3}$). The tidal radius is approximately
-%\begin{align}
-%	r_{\rm tide} \approx \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r
-%\end{align}
-%so that 
-%
-%then
-%\begin{align}
-%	2~{\rm pc} &= \left(\frac{m_{\rm cl}}{3M(<r)}\right)^{1/3} \, r\\
-%\end{align}
-%
-%
-%if we set
-%\begin{align}
-%	r_{\rm tide} = r_h = 2~{\rm pc} 
-%\end{align}
 
 \subsection{Future work: Modeling the Galactic bar}
 
