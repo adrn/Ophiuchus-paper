@@ -2,6 +2,7 @@
 \documentclass[letterpaper,12pt,preprint]{aastex}
 
 \input{../paper-helpers/preamble.tex}
+\usepackage{pdflscape}
 
 \newcommand{\lyapexp}{\lambda_{\rm max}}
 \newcommand{\lyapt}{t_\lambda}
@@ -271,10 +272,10 @@ for sky position in Galactic coordinates ($l$, $b$), distance, and radial veloci
 	\mathcal{L} = \prod_i^N \frac{1}{K} \sum_k^K p(\bs{x}_i \given \bs{y}_k, \bs{\sigma}_i, \bs{h}).
 \end{equation}
 
-Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} show the final particle positions and line-of-sight velocities in heliocentric coordinates for the maximum likelihood mock streams (grey points) in each potential. Vertical, dashed lines show the approximate extent of the part of the stream visible in main-sequence stars (excluding the BHB stars from S16). There are a few interesting features to note from these panels: 
+Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} show the final particle positions and line-of-sight velocities in heliocentric coordinates for the maximum likelihood mock streams (points) in each potential. Vertical lines show the approximate extent of the part of the stream visible in main-sequence stars (excluding the BHB stars from S16). \changes{Figure~\ref{fig:mockstream-pm0}--\ref{fig:mockstream-pm1} show the same for proper motion components.} There are a few interesting features to note from these panels: 
 \begin{enumerate}
 	\item Even in the static potential (Figure~\ref{fig:mockstream0}, leftmost column), there is a slight decrease in the density for the model stream towards higher Galactic longitudes, $l$. This is a projection effect: The portion of the stream at larger $l$ is closer and points almost directly towards the Sun so that the debris covers a larger area on the sky. 
-	\item The density of the mock stream in the static potential decreases slowly rather than abruptly as is observed. This is shown in the top panels of each column where each contour level represents a factor of 10 difference in projected surface density. In the static potential model the length of dense debris extends much farther than the observed extent of the stream (vertical dashed lines), whereas in some of the barred potential models the stars released earlier have ``fanned'' and are associated with much lower density debris (e.g., bar8).
+	\item The density of the mock stream in the static potential decreases slowly rather than abruptly as is observed. This is more easily seen in Figure~\ref{fig:mockstream-density} where each contour level represents a factor of 10 difference in projected surface density. In the static potential model the length of dense debris extends much farther than the observed extent of the stream (vertical dashed lines), whereas in some of the barred potential models the stars released earlier have ``fanned'' and are associated with much lower density debris (e.g., bar8).
 	\item The four high-dispersion BHB stars beyond the end of the stream (from S16) don't match in position and velocity with the particle distribution from even the maximum likelihood stream model in the static potential. In some barred potentials the chaotic evolution of the stream stars can lead to over-densities of stars with an increased positional dispersion and significantly discrepant velocities (e.g., bar8).
 	\item None of the stream models---static or barred---produce an appreciable density of stars with line-of-sight velocities near the S16 BHB star with the largest velocity ($\approx 320~\kms$). This star is either an interesting Ophiuchus member star or is associated with some other kinematic substructure.
 	\item For the barred potentials, the stream morphology is very sensitive to the properties of the bar (especially the pattern speed) and to the initial conditions of the orbit. We have found that the morphology can vary significantly between nearby orbits in the same potential model (because these are strongly chaotic orbits), but the overall characteristics remain similar: along more strongly chaotic orbits, the debris ``fans'' more and the apparent dense part of the model streams is shorter.
@@ -286,7 +287,7 @@ The viewing angle and stream geometry is more clearly demonstrated in Figure~\re
 
 \section{Discussion}\label{sec:discussion}
 
-The model streams presented here do not reproduce all observed features of the Ophiuchus stream (the details of the potential and the orbit predict vastly different phase-space morphologies for the fanned part). Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. If the cluster progenitor was on a regular orbit, it would have to have disrupted entirely within the last $\approx$300--600 Myr in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar): (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
+The model streams presented here do not reproduce all observed features of the Ophiuchus stream (the details of the potential and the orbit predict vastly different phase-space morphologies for the fanned part). Instead, these results illustrate that chaotic evolution of tidal debris can plausibly explain the peculiar features of the stream. \changes{If the cluster progenitor was on a regular orbit fit to the observed stream stars in a static, axisymmetric potential model for the Milky Way}, it would have to have disrupted entirely within the last $\approx$300--600 Myr in order to explain the shortness and density profile. In addition, the four most recently identified BHB stars with similar distances and line-of-sight velocities would have to be (highly unlikely) chance alignments of halo stars. If instead the progenitor were on a chaotic orbit (because of the influence of the Galactic bar): (1) stars stripped early will have ``fanned'' out and would thus be harder to observe and (2) the nearby, high-velocity-dispersion BHB stars can be naturally explained by this chaotic stream-fanning. We consider the second scenario to be more plausible: our understanding of the formation and evolution of the Ophiuchus stream is that the progenitor object has been orbiting and steadily losing stars over the last several Gigayears, but only the stars stripped from the most recent few pericentric passages remain coherent enough to be detected as a stream-like over-density in the PS1 data.
 
 It is still too early to say for sure that chaotic stream-fanning is occurring for the Ophiuchus stream. Deeper follow-up imaging and spectroscopy over a larger area region around the stream will be needed to test the predictions of this work and compare with other possible scenarios. For example, recent work has shown that if the Ophichus stream progenitor orbit is in resonance with the bar, the debris can remain short for at least 1 Gyr \citep{hattori15}. In their model, there would be no nearby, high-dispersion debris, and the pattern speed of the bar would be related to the orbital frequencies of the progenitor orbit. However, it has not been demonstrated whether this proposed scheme can explain the shortness of the stream over timescales closer to the age of the stellar population ($\approx$10 Gyr). With more information about the density distribution of stars in the stream and better proper motion measurements we would be able to (1) help distinguish models for the Milky Way bar independent from current methods and (2) begin to model the survivability of globular clusters orbiting in the central Milky Way \citep[e.g.,][]{gnedin97}. 
 
@@ -314,45 +315,80 @@ APW acknowledges David Bowie (1947--2016) for his continuous inspiration and art
 This research made use of Astropy, a community-developed core Python package for Astronomy \citep{astropy13}.
 This work additionally relied on Columbia University's \emph{Yeti} compute cluster, and we acknowledge the Columbia HPC support staff for assistance. \\
 
-% ---------------------------------------------------------------------------------
-
-
+% --------------------------------------------------------------------------------- 
+\begin{landscape}
 \begin{figure*}[p]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/mockstream0}
-\caption{ Sky position, distance, and line-of-sight velocity in heliocentric, Galactic coordinates for star particles (contours or grey points) from the maximum-likelihood mock streams in each potential. Top panels show surface density of mock stream star particles in each potential. Contours are spaced logarithmically from $10^{-2}$ to $10$ particles per sq. deg---that is, each color represents a factor of 10 difference in surface density. In the static potential (top left), the density remains high along the center of the stream, but for some of the barred potentials the density drops sharply because of chaotic stream-fanning. Vertical, dashed lines show the approximate extent of the densest part of the stream visible in main-sequence stars \citep[the segment originally detected in ][]{bernard14}.}
+\includegraphics[width=1.2\textwidth]{figures/mockstream0}
+\caption{ Sky position, distance, and line-of-sight velocity in heliocentric, Galactic coordinates for star particles (points) from the maximum-likelihood mock streams in each potential. Vertical, dashed lines show the approximate extent of the densest part of the stream visible in main-sequence stars \citep[the segment originally detected in ][]{bernard14}. \changes{Star particles are colored by the time of stripping relative to present-day. Green, square points show the four ``fanned'' stars.}}
 \label{fig:mockstream0}
 \end{center}
 \end{figure*}
+\end{landscape}
 
-
+\begin{landscape}
 \begin{figure*}[p]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/mockstream1}
+\includegraphics[width=1.2\textwidth]{figures/mockstream1}
 \caption{ Same as Figure~\ref{fig:mockstream0} for the other five barred potentials. }
 \label{fig:mockstream1}
 \end{center}
 \end{figure*}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure*}[p]
+\begin{center}
+\includegraphics[width=1.2\textwidth]{figures/mockstream-pm0}
+\caption{ Proper motion components in Galactic coordinates for star particles (points) from the maximum-likelihood mock streams in each potential. Star particles are colored by the time of stripping relative to present-day. Green, square points show the four ``fanned'' stars.}
+\label{fig:mockstream-pm0}
+\end{center}
+\end{figure*}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure*}[p]
+\begin{center}
+\includegraphics[width=1.2\textwidth]{figures/mockstream-pm1}
+\caption{ Same as Figure~\ref{fig:mockstream-pm0} for the other five barred potentials. }
+\label{fig:mockstream-pm1}
+\end{center}
+\end{figure*}
+\end{landscape}
+
+\begin{landscape}
+\begin{figure*}[p]
+\begin{center}
+\includegraphics[width=1.3\textwidth]{figures/mockstream-density}
+\caption{ Surface density of mock stream star particles in each potential. Contours are spaced logarithmically from $10^{-2}$ to $10$ particles per sq. deg---that is, each color represents a factor of 10 difference in surface density. In the static potential (top left), the density remains high along the center of the stream, but for some of the barred potentials the density drops sharply because of chaotic stream-fanning. }
+\label{fig:mockstream-density}
+\end{center}
+\end{figure*}
+\end{landscape}
 
 % ---------------------------------------------------------------------------------
 
+\begin{landscape}
 \begin{figure*}[p]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/densitymaps}
+\includegraphics[width=1.3\textwidth]{figures/densitymaps}
 \caption{ Simulated maps of the 2D density of star particles from the maximum-likelihood mock streams in each potential with a noisy background of stars binned into 10' by 10' pixels. The background star density is assumed to be Poisson with $\lambda = 42$ \citep[see Figure 3 in][where the typical background density is $\approx\frac{60}{(0.2~{\deg})^2}$]{bernard14}. The mock stream particles are down-sampled so that the total number of particles in the region of sky that the stream is seen as an over-density matches the observed number of stars \citep[$N\approx500$][]{bernard14}. Color-scale is stretched so that white to black is 2nd to 98th percentile.}
 \label{fig:densitymaps}
 \end{center}
 \end{figure*}
+\end{landscape}
 
 % ---------------------------------------------------------------------------------
 
+\begin{landscape}
 \begin{figure*}[p]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/mockstream-xyz}
+\includegraphics[width=1.3\textwidth]{figures/mockstream-xyz}
 \caption{ Star particles (grey points) from mock streams generated on the mean orbits in each potential model shown in projections of Galatocentric, Cartesian coordinates. The position of the Sun is shown as the symbol at $(x,z)=(-8.3,0)~{\rm kpc}$. The volume of the sky position and distance plots of Figures~\ref{fig:mockstream0}--\ref{fig:mockstream1} are shown transformed to these coordinates as the blue wedge near $(x,z)=(-2,4)~{\rm kpc}$. This demonstrates that the stream is nearly aligned our viewing angle. }
 \label{fig:mockstreamxyz}
 \end{center}
 \end{figure*}
+\end{landscape}
 
 % ---------------------------------------------------------------------------------
 
