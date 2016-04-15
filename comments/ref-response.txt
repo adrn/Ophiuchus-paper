@@ -1,0 +1,220 @@
+Editor
+======
+
+Dear Prof. Burton --
+
+Thank for your editorial help with our paper. We appreciate your concern about
+our title but would much prefer to keep it as is. We respectfully disagree
+with your interpretation and conclusion: we think that the current title *does*
+convey the desired scientific information and we do not believe that it crosses
+the threshold to being too flippant. We hope you will respect our scientific
+and creative sensibilities on this aspect of our work.
+
+
+Referee
+=======
+
+Changes in the text are highlighted in red. Original response from the referee
+are included below and preceded by "R:"
+
+
+# -----------------------------------------------------------------------------
+R: (Section 2.3) The authors describe that their simulation method is similar
+to Fardal et al. (2015) except that the authors take into account the complete
+disruption of the progenitor. However, the authors also assume that the mass
+loss rate of the progenitor cluster is constant in time, which is not assumed
+in Fardal et al. I suggest the authors to explicitly mention this point in
+section 2.3.
+
+We have added a sentence to clarify:
+
+"This simplification assumes that the mass-loss rate is constant in time; this
+is not assumed in \citet{fardal14} but has been shown to closely reproduce
+$N$-body simulations of globular cluster disruption \citep{kuepper12}."
+
+
+# -----------------------------------------------------------------------------
+R: (Section 2.3, 2nd Paragraph) In the 2nd paragraph of Section 2.3, the
+authors explain that the velocities of escaping stars are assumed to have "a
+small (velocity) dispersion" after the disruption time. I think the authors
+should provide more quantitative information on this prescription (e.g., how
+small is the dispersion?), since (i) no other papers have attempted to add this
+property; and (ii) the most recently disrupted debris partly contribute to the
+high-density part of the Ophiuchus stream.
+
+We have updated this sentence to clarify the methodology:
+
+"That is, any star released after $\tau_d$ is drawn from a Gaussian with
+positional and velocity dispersion fixed to their respective values at $\tau_d$
+with no offset from the progenitor orbit."
+
+
+# -----------------------------------------------------------------------------
+R: (Section 3, Fig 2) In Figure 2, the authors only showed the sampled orbits
+and the data points in (b, d_sun, v_r) as a function of Galactic longitude.
+However, since the authors used the proper motion information to fit the data
+points with orbits, the authors should present the behavior of (mu_l, mu_b) as
+a function of Galactic longitude as well. Showing the panels of proper motion
+data is of importance in my opinion, since Sesar et al. (2015) found a mismatch
+between the best-fit orbit and the data points in the proper motion space (see
+their Fig 9).
+
+We feel that adding the proper motion panels to Figure 2 creates clutter on the
+figure and does not add valuable information toward the conclusions in this
+paper. However, we do agree that these panels are useful for the broader
+context and understanding of the stream and for future observational studies.
+We have therefore chosen to include these panels as an additional figure. We
+have also added comments to the section that describe these figures:
+
+"As was previously noted, there is a marginal discrepancy between the orbit
+fits and the observed proper motions, but it is possible there is a systematic
+offset in the proper motion measurements \citep[see Figure~10 in][]{sesar15a}.
+We conclude that it is too soon to tell whether there is in fact an
+inconsistency."
+
+
+# -----------------------------------------------------------------------------
+R: (Section 3, Paragraph 1) In the first paragraph of Section 3, it is unclear
+to me how the "mean orbit" for a given potential model is determined. I suppose
+that the five-dimensional information of (phi_2, d_sun, mu_l, mu_b, v_r) in
+Table 4 are evaluated at a certain value of phi_1; but what value of phi_1 did
+the authors use?
+
+We use phi1 = 0. We have added a note to the figure caption, table caption, and
+paragraph to explain this.
+
+
+# -----------------------------------------------------------------------------
+R: (Section 3, Table 4) "d [kpc]" in Table 4 should read "d_sun [kpc]".
+
+Fixed, thanks.
+
+
+# -----------------------------------------------------------------------------
+R: (Section 3, Paragraph 2) In the 2nd paragraph of Section 3, the authors
+claim that "it is clear from these panels that the orbits around Ophiuchus are
+generally more strongly chaotic (have lower Lyapunov times) for larger pattern
+speeds". However, this statement seems to be too strong. I suggest the authors
+to make this statement more moderate. For example, Hattori et al. (2015)
+modeled the Ophiuchus stream and found that a difference of Omega by a few
+km/s/kpc results in very different stream length (see their Figure 9). Given
+their results, I wonder if the Lyapunov time is sensitive to Omega at 30
+km/s/kpc < Omega < 50 km/s/kpc. Also, let us suppose that Omega=infinity (or
+very large). When Omega=infinity, the potential becomes static and
+axisymmetric. So I expect that the Lyapunov time is very long, based on the
+authors' calculation of the Lyapunov time in their reference potential (which
+is static and axisymmetric). This simple argument disagrees with the
+above-quoted statement.
+
+We have tried to make this more moderate:
+
+"From the left column to the right column, the distribution of Lyapunov times
+shifts slightly towards lower values suggesting that the orbits around
+Ophiuchus are more strongly chaotic for larger pattern speeds (within the range
+considered in this work)."
+
+We are only making the claim that larger pattern speeds *within the small range
+we consider* are more strongly chaotic. The question of what happens as Omega
+tends towards infinity will depend on the resonant structure of the potential
+and will not affect whether the number of chaotic orbits will increase or
+decrease over this small range of pattern speeds.
+
+
+# -----------------------------------------------------------------------------
+R: (Section 4) It may be worth while adding panels in Figures 5 and 6 that
+describe the proper motion distribution of the simulated stars. Although the
+proper motion data is not available for the four "fanned" BHB stars, it may be
+helpful for the community to understand how the proper motion distribution is
+predicted in the chaotic fanning scenario.
+
+We feel that these figures are quite busy already and would prefer not to
+include the proper motion panels in this figure. We have included two
+additional figures with the proper motion predictions of the mock streams.
+
+
+# -----------------------------------------------------------------------------
+R: (Section 5) In the 1st paragraph of Section 5, it is stated that "If the
+cluster progenitor was on a regular orbit, it would have to have disrupted
+entirely within the last 300-600 Myr in order to explain the shortness and
+density profile." I think this statement is too strong, given that the authors
+only tried a single potential model (static potential) in which the orbits are
+regular. From the calculations presented in this paper, it is unclear to me if
+it is really hard for regular orbits to model the Ophiuchus stream. I suggest
+the authors to emphasize that some chaotic orbits can shorten the high-density
+part of the stream, instead of stating that the regular orbits can hardy
+explain the Ophiuchus stream unless the stream is dynamically young.
+
+We have changed this sentence to include a caveat:
+
+"If the cluster progenitor was on a regular orbit fit to the observed stream
+stars in a static, axisymmetric potential model for the Milky Way..."
+
+
+# -----------------------------------------------------------------------------
+R: (Section 5) The authors state that "stars stripped early will have "fanned"
+out and would thus be harder to observe". A similar statement appears also in
+the abstract and this statement seems to be the key idea of this paper.
+However, it is unclear to me where does this statement come from. In order to
+support this statement, it may be better to describe the current-epoch density
+structure on the sky (l, b) as a function of released time. For example, it
+might be helpful to put a figure showing the density distributions of stars
+released at -6 Gyr < t <-5Gyr, -3.5 Gyr < t < -2.5 Gyr and -1Gyr < t < 0 Gyr
+for static model and a bar model.
+
+We have updated figures 6 and 7 to color the points by the stripping time. We
+have moved the surface density plots to a new figure, figure 8.
+
+
+# -----------------------------------------------------------------------------
+R: (Section 5) Does the chaotic fanning scenario requires that the progenitor
+completed its disruption very recently? If the disruption was completed at t=-2
+Gyr (and the progenitor has not released stars since then), the stars in the
+Ophiuchus stream can evolve for at least 2 Gyr. Given that the Lyapunov time is
+400-1100 Myr for these orbits, I would not be surprised if the Ophiuchus stream
+could not retain its high-density part at t=0.
+
+If the progenitor fully disrupted at t=-2 Gyr, we have found that the stream
+doesn't retain its high-density where it is observed today.
+
+
+# -----------------------------------------------------------------------------
+R: (Figure 8) In the caption of Fig 8, "(x,z)=(-8, 0) kpc" should read
+"(x,z)=(-8.3, 0) kpc".
+
+Fixed.
+
+
+# -----------------------------------------------------------------------------
+R: (section 6) The authors state that "the orbits of the Ophiuchus stream stars
+are likely sensitive to the time-dependence and shape of the bar potential." In
+this paper, the authors compared the results in a static, axisymmetric
+potential and those in a rotating triaxial potentials. However, it is unclear
+if the chaotic nature of the orbit is due to the triaxiality or the
+time-dependence or both. I guess that the chaotic nature stems mainly from
+time-dependence, but in order to be confident one needs to investigate
+non-rotating bar potential (Omega=0) in addition to the bar1-bar9 models. If it
+does not take too much time, I would like to ask the authors to explore the
+model with Omega=0. If the full analysis will take too much time, then I would
+suggest the authors to calculate t_lambda for Omega=0 case and add a few lines
+in Section 3.
+
+We have run a subset of the experiments for the case Omega=0 and found that,
+indeed, it appears that time-dependence is the main cause of chaos. We have
+added a paragraph to Section 3 to explain:
+
+"To understand whether time-dependence or the triaxiality of the bar is the
+dominant cause of chaos, we have also performed the orbit-fit and Lyapunov time
+experiments in a potential with a fixed bar ($\Omega_p = 0$) at the same bar
+angles explored above. We find that the Lyapunov times for orbits fit to the
+stream in these potentials are consistent with being regular. Computing the
+frequency diffusion rate instead shows that these orbits are likely weakly
+chaotic: the frequency diffusion times \citep{apw15-chaos} are
+$\approx$$10^4~{\rm Gyr}$. We therefore conclude that the time-dependence of the
+bar is the primary source of chaos in the inner Galaxy."
+
+
+# -----------------------------------------------------------------------------
+R: (Appendix B) In the 1st paragraph of Appendix B, the authors need to define
+the vector sigma_i = (sigma_DM, sigma_mul, sigma_mub, sigma_vr)_i .
+
+Fixed.
